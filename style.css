@@ -157,24 +157,52 @@
     margin-right: auto;
 }
 
-.carousel-container {
-    width: 100%;
+#banner {
+    height: 25vh;
+    width: 100vw;
     position: relative;
+    overflow: hidden;
 }
 
-.carousel {
-    display: flex;
-    width: 50%;
-    height: 50%;
-    transition: transform 0.5s ease;
+#banner img {
+    position: absolute;
+    left: 45%;
+    top: 0;
+    max-width: 100%;
+    max-height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
 }
 
-.carousel img {
-    width: 60%;
-    height: 60%;
-    object-fit: cover;
+#banner img.active {
+    opacity: 1;
 }
 
+#prev, #next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2em;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0.5em;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#prev:hover, #next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+#prev {
+    left: 0;
+}
+
+#next {
+    right: 0;
+}
 
 .ofertas-container {
     display: flex;

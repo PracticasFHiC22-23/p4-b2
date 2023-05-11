@@ -17,14 +17,5 @@ const miapp = Vue.createApp({
     },
     methods:{
 
-
-
     }
-
-
-
 });
-
-
-
-miapp.mount('#app')
