@@ -1,5 +1,4 @@
 const miapp = Vue.createApp({
-
     data() {
         return {
             //Modificar todos los ejemplos de productos etc...no meter nutricion.html y demas en una carpeta porque no te funcionara la parte de pillar los demas archivos
