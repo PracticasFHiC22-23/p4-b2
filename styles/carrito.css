@@ -1,0 +1,22 @@
+.tabla-carrito {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.tabla-carrito th, .tabla-carrito td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla-carrito th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.tabla-carrito tr:hover {
+    background-color: #f5f5f5;
+}
