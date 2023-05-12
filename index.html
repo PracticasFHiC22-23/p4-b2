@@ -117,39 +117,7 @@
     <script src="./vue-list/ofertas.js"></script>
     <script src="./vue-list/buscador.js"></script>
     </body>
-    <head>
-        <meta charset="UTF-8">
-        <title>Tienda</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-            /* Estilos adicionales para el mapa */
-            #map {
-                height: 400px;
-                width: 100%;
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
 
-    <body>
-        <div id="map"></div> <!-- Contenedor para el mapa -->
-        <script>
-            function initMap() {
-                // Creamos un nuevo objeto mapa de Google
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    center: {lat: 41.393835, lng: 2.163810}, // Centramos el mapa en la ubicación de la tienda
-                    zoom: 17 // Establecemos un nivel de zoom inicial
-                });
-                // Creamos un marcador para la ubicación de la tienda
-                var marker = new google.maps.Marker({
-                    position: {lat: 41.393835, lng: 2.163810}, // Establecemos la posición del marcador
-                    map: map,
-                    title: 'Ub Rules' // Añadimos una etiqueta al marcador
-                });
-            }
-        </script>
-        <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap"></script>
-    </body>
+
 
 </html>
