@@ -32,7 +32,6 @@ searchButton.addEventListener("click", () => {
 
     if (query === "") {
         foodList.innerHTML = "";
-        tableBody.innerHTML = "";
         return;
     }
 
