@@ -56,13 +56,34 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex flex-column align-items-center" style="padding-top: 40px; margin-right: 20px; width: 70%">
-            <table class="tabla-carrito">
-                <thead>
-                    <tr id="table-header"></tr>
-                </thead>
-                <tbody id="table-body"></tbody>
-            </table>
+        <div class="d-flex flex-row justify-content-between" style="width: 100%">
+            <div class="d-flex flex-column align-items-center" style="padding-top: 40px; margin-right: 20px; width: 70%">
+                <table class="tabla-carrito">
+                    <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio/Unidad</th>
+                        <th>Eliminar</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+
+            <div class="d-flex flex-column align-items-center" style="padding-top: 40px; margin-right: 20px; width: 30%">
+                <table class="table-total">
+                    <tbody>
+                    <tr>
+                        <th>Total</th>
+                        <td id="total-amount"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="btn-finalizar-compra" id="btn-finalizar-compra">Finalizar Compra</button>
+            </div>
+
+
         </div>
 
     </div>
