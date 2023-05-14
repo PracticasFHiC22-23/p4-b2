@@ -1,72 +1,117 @@
 <template>
-  <div class='container'>
-    <h1>Buscar alimentos</h1>
-    <div class='search-container'>
-      <input type='text' id='search-input' v-model='busqueda' placeholder='Buscar alimentos'/>
-      <button id='search-button'>Buscar</button>
-      <ul>
-        <li v-for='(alimento, index) in alimentosFiltrados' :key='alimento' @click='agregarAlimento(index)'></li>
-      </ul>
-    </div>
-    <div class='table-container'>
-      <table>
-        <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Cantidad</th>
-          <th>Calorías</th>
-          <th>Hidratos</th>
-          <th>Grasas</th>
-          <th>Proteína</th>
-          <th>Agregar</th>
-        </tr>
-        </thead>
-        <tbody id='table-body'>
-        <tr v-for='alimento in alimentosSeleccionados' :key='alimento'>
-          <td>{{ alimento.nombre }}</td>
-          <td><input type='number' v-model='alimento.cantidad'></td>
-          <td>{{ alimento.calorias }}</td>
-          <td>{{ alimento.hidratos }}</td>
-          <td>{{ alimento.grasas }}</td>
-          <td>{{ alimento.proteina }}</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+  <div>
+    <div><inici :main-page="false"/></div>
+    <input type="text" v-model="searchQuery" @keydown.enter="searchFood" />
+    <button @click="searchFood">Buscar</button>
+    <ul>
+      <li v-for="alimento in searchResults" :key="alimento.nombre">
+        {{ alimento.nombre }}
+        <input type="number" v-model="alimento.cantidad" min="0" step="25" />
+        <button @click="agregarAlimento(alimento)">Añadir</button>
+      </li>
+    </ul>
+    <table>
+      <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Cantidad</th>
+        <th>Calorías</th>
+        <th>Hidratos</th>
+        <th>Grasas</th>
+        <th>Proteína</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="alimento in selectedFoods" :key="alimento.nombre">
+        <td>{{ alimento.nombre }}</td>
+        <td>{{ alimento.cantidad }}</td>
+        <td>{{ alimento.calorias * alimento.cantidad / 100 }}</td>
+        <td>{{ alimento.hidratos * alimento.cantidad / 100 }}</td>
+        <td>{{ alimento.grasas * alimento.cantidad / 100 }}</td>
+        <td>{{ alimento.proteina * alimento.cantidad / 100 }}</td>
+        <td><button @click="eliminarAlimento(alimento)">Eliminar</button></td>
+      </tr>
+      <tr>
+        <td><strong>Total</strong></td>
+        <td></td>
+        <td>{{ totalCalorias }}</td>
+        <td>{{ totalHidratos }}</td>
+        <td>{{ totalGrasas }}</td>
+        <td>{{ totalProteina }}</td>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script>
+import inici from '../components/inici.vue'
+
 export default {
-  name: 'calculadora',
-  data () {
+  data() {
     return {
       alimentos: [
-        { nombre: 'Manzana', cantidad: 100, calorias: 95, hidratos: 25, grasas: 0, proteina: 1 },
-        { nombre: 'Pera', cantidad: 100, calorias: 85, hidratos: 22, grasas: 0, proteina: 1 },
-        { nombre: 'Leche', cantidad: 100, calorias: 150, hidratos: 12, grasas: 8, proteina: 8 },
-        { nombre: 'Yogur', cantidad: 100, calorias: 110, hidratos: 10, grasas: 2, proteina: 12 },
-        { nombre: 'Pollo', cantidad: 100, calorias: 165, hidratos: 0, grasas: 6, proteina: 31 },
-        { nombre: 'Arroz', cantidad: 100, calorias: 205, hidratos: 45, grasas: 0, proteina: 4 }
+        { nombre: "Manzana", cantidad: 100, calorias: 95, hidratos: 25, grasas: 0, proteina: 1 },
+        { nombre: "Pera", cantidad: 100, calorias: 85, hidratos: 22, grasas: 0, proteina: 1 },
+        { nombre: "Leche", cantidad: 100, calorias: 150, hidratos: 12, grasas: 8, proteina: 8 },
+        { nombre: "Yogur", cantidad: 100, calorias: 110, hidratos: 10, grasas: 2, proteina: 12 },
+        { nombre: "Pollo", cantidad: 100, calorias: 165, hidratos: 0, grasas: 6, proteina: 31 },
+        { nombre: "Arroz", cantidad: 100, calorias: 205, hidratos: 45, grasas: 0, proteina: 4 }
       ],
-      busqueda: '',
-      alimentosSeleccionados: [],
+      searchQuery: "",
+      searchResults: [],
+      selectedFoods: []
     };
   },
   methods: {
-    agregarAlimento(index) {
-      this.alimentosSeleccionados.push(alimentos[index]);
+    buscarAlimentos() {
+      const query = this.searchQuery.trim();
+      if (query === "") {
+        this.searchResults = [];
+        return;
+      }
+      this.searchResults = this.alimentos.filter((alimento) => {
+        const nombre = alimento.nombre.toLowerCase();
+        return nombre.includes(query.toLowerCase());
+      });
+    },
+    searchFood() {
+      this.buscarAlimentos();
+    },
+    agregarAlimento(nuevoAlimento) {
+      this.selectedFoods.push(nuevoAlimento);
+    },
+    eliminarAlimento(alimento) {
+      const index = this.selectedFoods.indexOf(alimento);
+      if (index !== -1) {
+        this.selectedFoods.splice(index, 1);
+      }
     }
   },
   computed: {
-    alimentosFiltrados() {
-      if (this.busqueda) {
-        return this.alimentos.filter(alimento =>
-          alimento.nombre.toLowerCase().includes(this.busqueda.toLowerCase())
-        );
-      }
+    totalCalorias() {
+      return this.selectedFoods.reduce((total, alimento) => {
+        return total + (alimento.calorias * alimento.cantidad / 100);
+      }, 0);
     },
-  }
+    totalHidratos() {
+      return this.selectedFoods.reduce((total, alimento) => {
+        return total + (alimento.hidratos * alimento.cantidad / 100);
+      }, 0);
+    },
+    totalGrasas() {
+      return this.selectedFoods.reduce((total, alimento) => {
+        return total + (alimento.grasas * alimento.cantidad / 100);
+      }, 0);
+    },
+    totalProteina() {
+      return this.selectedFoods.reduce((total, alimento) => {
+        return total + (alimento.proteina * alimento.cantidad / 100);
+      }, 0);
+    },
+  },
 }
 </script>
 

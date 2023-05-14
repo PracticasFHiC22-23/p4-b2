@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Banner from '@/components/Banner'
-import Ofertas from '@/components/Ofertas'
+import Vue from 'vue';
+import Router from 'vue-router';
 import calculadora from "../components/calculadora";
+import inici from '../components/inici';
+import carrito from "../components/carrito";
 
 Vue.use(Router)
 
@@ -10,18 +10,20 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Banner',
-      component: Banner
+      name: 'inici',
+      component: inici
     },
     {
-      path: '/',
-      name: 'Ofertas',
-      component: Ofertas
-    },
-    {
-      path: '/',
-      name: 'Calculadora',
+      path: '/calculadora',
+      name: 'calculadora',
       component: calculadora
     },
+    {
+      path: '/carrito',
+      name: 'carrito',
+      component: carrito
+    }
   ]
 })
+
+

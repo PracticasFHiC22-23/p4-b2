@@ -96,3 +96,4 @@ btnFinalizarCompra.addEventListener("click", () => {
         calcularTotal();
     }
 });
+

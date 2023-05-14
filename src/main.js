@@ -3,9 +3,17 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import calculadora from "./components/calculadora"
+import banner from "./components/banner";
+import ofertas from "./components/ofertas";
+import inici from "./components/inici"
+import carrito from "./components/carrito";
 
 Vue.config.productionTip = false
+
+Vue.component('banner', banner)
+Vue.component('ofertas', ofertas)
+Vue.component('inici', inici)
+Vue.component('carrito', carrito)
 
 /* eslint-disable no-new */
 new Vue({
@@ -15,14 +23,4 @@ new Vue({
     App
   },
   template: '<App/>'
-})
-
-/* eslint-disable no-new */
-new Vue({
-  el: '#Calculadora',
-  router,
-  components: {
-    calculadora
-  },
-  template: '<Calculadora/>'
 })
