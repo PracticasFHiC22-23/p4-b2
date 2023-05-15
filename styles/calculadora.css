@@ -60,6 +60,25 @@ h1 {
     border-radius: 5px;
 }
 
+.food-quantity {
+  /* Agrega aquí el estilo deseado para el input type number */
+  width: 50px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.add-food {
+  /* Agrega aquí el estilo deseado para el botón */
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
 .table-container {
     overflow-x: auto;
 }

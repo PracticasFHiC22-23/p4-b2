@@ -1,8 +1,8 @@
 <template>
   <div>
     <div><inici :main-page="false"/></div>
-    <div class="d-flex flex-row justify-content-between" style="width: 100%">
-      <div class="d-flex flex-column align-items-center" style="padding-top: 40px; margin-right: 20px; width: 70%">
+    <div class="contenedor-tablas">
+      <div class="d-flex flex-column align-items-center" style="padding-top: 40px; margin-right: 20px; flex: 1">
         <table class="tabla-carrito">
           <thead>
           <tr>
@@ -13,10 +13,10 @@
           </tr>
           </thead>
           <tbody id="table-body">
-          <tr v-for="(producto, index) in productos" :key="producto">
+          <tr v-for="(producto) in productos" :key="producto" @mouseover="producto.mostrarEliminar=true" @mouseleave="producto.mostrarEliminar=false">
             <td>
               <div class="d-flex align-items-center">
-                <img :src="producto.imagen" :alt="producto.nombre" style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
+                <img :src="producto.imagen" style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
                 <span>{{ producto.nombre }}</span>
               </div>
             </td>
@@ -36,11 +36,13 @@
           <tbody>
           <tr>
             <th>Total</th>
-            <td id="total-amount"></td>
+            <td id="total-amount">{{ formattedTotal }}</td>
           </tr>
           </tbody>
         </table>
-        <button class="btn-finalizar-compra" id="btn-finalizar-compra">Finalizar Compra</button>
+        <div style="display: flex; justify-content: flex-end; margin-top: 20px">
+          <button class="btn-finalizar-compra" id="btn-finalizar-compra" @click="finalizarCompra">Finalizar Compra</button>
+        </div>
       </div>
     </div>
   </div>
@@ -48,6 +50,8 @@
 
 <script>
 import inici from '../components/inici.vue';
+import creatinaMono from '../assets/creatina.jpg'
+import creatinaCreapure from '../assets/creatine-offer.jpg'
 
 export default {
   name: "carrito",
@@ -58,17 +62,25 @@ export default {
           nombre: 'Creatina Monohydrate Biotech',
           cantidad: 2,
           precio: 20.0,
-          imagen: '../assets/creatina.jpg'
+          imagen: creatinaMono,
+          mostrarEliminar: false
         },
         {
           nombre: 'Creatina Creapure',
           cantidad: 1,
           precio: 35.0,
-          imagen: '../assets/creatine-offer.jpg'
+          imagen: creatinaCreapure,
+          mostrarEliminar: false
         },
       ],
       total: 0
     };
+  },
+  computed: {
+    formattedTotal() {
+      const total = this.productos.reduce((acc, producto) => acc + producto.cantidad * producto.precio, 0);
+      return total < 0 ? '0.00 €' : `${total.toFixed(2)} €`;
+    }
   },
   methods: {
     eliminarFila(producto) {
@@ -93,6 +105,9 @@ export default {
         this.productos = [];
         this.calcularTotal();
       }
+    },
+    mostrarBotonEliminar(producto, mostrar) {
+      producto.mostrarEliminar = mostrar;
     }
   },
   mounted() {

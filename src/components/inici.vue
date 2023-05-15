@@ -6,15 +6,20 @@
           <img :src="logo" alt="Logo">
         </a>
       </div>
+
       <div class="search-bar" id="searchProduct">
-        <div class="search-bar">
-          <input type="text" id="search-product" placeholder="Buscar...">
-          <button id="search-button-product">Buscar</button>
-        </div>
-        <div id="dropdown-search">
-          <ul id="product-list"></ul>
+        <input type="text" id="search-product" placeholder="Buscar..." v-model="busqueda" @input="buscarProductos">
+        <button id="search-button-product" @click="buscarProductos">Buscar</button>
+        <div id="dropdown-search" v-show="mostrarDropdown">
+          <ul id="product-list" v-if="resultados.length">
+            <li v-for="producto in resultados" :key="producto.id">
+              <a @click="producto.url === './objetivos' ? irCarrito() : irCalculadora()">{{ producto.nombre }}</a>
+            </li>
+          </ul>
+          <p v-else>No se encontraron productos.</p>
         </div>
       </div>
+
       <div class="profile-bar">
         <a>
           <img :src="perfil" alt="Perfil">
@@ -24,21 +29,23 @@
         </a>
       </div>
     </div>
-    <div id="index">
-      <div class="navbar-second">
-        <div class="navbar-left">
-          <ul>
-            <li class="dropdown" v-for="item in navegacion">
-              <a :href="item.urlNav">{{ item.texto }}</a>
-              <div class="dropdown-menu">
-                <a v-for="producto in item.productos" :href="producto.url">{{ producto.nombre }}</a>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="navbar-right">
-          <button v-for="obj in objetivos" @click="ircalculadora()">{{obj.texto}}</button>
-        </div>
+    <div class="navbar-second">
+      <div class="navbar-left">
+        <ul>
+          <li class="dropdown" v-for="item in navegacion">
+            <button :href="item.urlNav">{{ item.texto }}</button>
+            <div class="dropdown-menu">
+              <a v-for="producto in item.productos" :href="producto.url">{{ producto.nombre }}</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="navbar-right">
+        <ul>
+          <li v-for="(obj, index) in objetivos" :key="index">
+            <button @click="obj.url === './objetivos' ? irCarrito() : irCalculadora()" class="navbar-btn">{{ obj.texto }}</button>
+          </li>
+        </ul>
       </div>
     </div>
     <banner v-if="mainPage"/>
@@ -78,17 +85,40 @@ export default {
       ],
       objetivos: [
         { texto: 'Objetivos', url: './objetivos' },
-        { texto: 'Calculadora', url: '/calculadora' }
-      ]
+        { texto: 'Calculadora', url: './calculadora' }
+      ],
+      busqueda: "",
+      productos: [
+        {nombre: "Creatina Creapure", url: './calculadora'},
+        {nombre: "Creatina Monohydrate", url: './calculadora'},
+        {nombre: "Trembolona", url: './calculadora'}
+      ],
+      resultados : [],
+      mostrarDropdown: false,
+
     }
   },
   methods: {
-    ircalculadora(){
+    irCalculadora(){
       router.push('/calculadora');
     },
     irCarrito(){
       router.push('/carrito');
-    }
+    },
+    buscarProductos() {
+      this.resultados = []
+      const busqueda = this.busqueda.toLowerCase().trim();
+      if (busqueda) {
+        this.productos.forEach(producto => {
+          if (producto.nombre.toLowerCase().includes(busqueda)) {
+            this.resultados.push(producto);
+          }
+        });
+        this.mostrarDropdown = true;
+      } else {
+        this.mostrarDropdown = false;
+      }
+    },
   }
 }
 </script>
