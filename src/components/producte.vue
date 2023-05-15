@@ -14,12 +14,14 @@
         <img :src="getImatgeUrl(productoEncontrado.url)" alt="">
       </div>
     </div>
+    <review />
   </div>
 </template>
 
 <script>
 import router from "../router"
 import inici from '../components/inici.vue'
+import review from "./review";
 
 export default {
   name: "producte",
