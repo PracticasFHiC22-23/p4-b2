@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Perfil</title>
@@ -8,12 +8,18 @@
           rel="stylesheet" integrity="sha384-
     BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="styles/style.css" rel="stylesheet">
+    <link href="styles/perfil.css" rel="stylesheet">
     <script src="https://unpkg.com/vue@next"defer></script>
     <script src="./vue-list/index.js" defer></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script>
+        function cerrarSesion() {
+            alert("¡Has cerrado Sesion!");
+        }
+    </script>
 </head>
 <body>
 <div id="app">
@@ -31,9 +37,16 @@
             </form>
         </div>
         <div class="profile-bar">
-            <a href="./perfil.html">
-                <img src="./imagenes/perfil.jpg" alt="Perfil">
-            </a>
+            <div class="profile-dropdown">
+                <a href="./perfil.html">
+                    <img class="profile-image" src="./imagenes/perfil.jpg" alt="Perfil">
+                </a>
+                    <div class="profile-dropdown-content">
+                        <a href="./EditarPerfil.html">Editar Perfil</a>
+                        <a href="#">Mis Pedidos</a>
+                        <a href="./index.html"onclick="cerrarSesion()">Cerrar Sesión</a>
+                    </div>
+            </div>
             <a href="./carrito.html">
                 <img src="./imagenes/carrito.jpg" alt="Carrito">
             </a>
@@ -57,6 +70,27 @@
         </div>
     </div>
 
+    <div class="column">
+        <a class="button" href="./EditarPerfil.html">
+                <img class="profile-image" src="./imagenes/perfil.png" alt="profile-edit">
+            Editar Perfil
+            <span>Ver o cambiar información de la cuenta</span>
+        </a>
+    </div>
+    <div class="column">
+        <button class="button">
+                <img class="order-image" src="imagenes/Pedidos.png" alt="Pedidos">
+            Mis Pedidos
+            <span>Ver pedidos realizados</span>
+        </button>
+    </div>
+    <div class="column">
+        <a class="button" href="./index.html" onclick="cerrarSesion()">
+                <img class="order-image" src="imagenes/Cerrar.png" alt="Cerrar">
+            Cerrar Sesión
+            <span>Cierra tu sesion actual</span>
+        </a>
+    </div>
 </div>
 </body>
 </html>
