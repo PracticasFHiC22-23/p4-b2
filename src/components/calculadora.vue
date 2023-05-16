@@ -9,7 +9,7 @@
       </div>
       <div class="search-results">
         <ul id="food-list">
-          <li v-for="alimento in searchResults" :key="alimento.nombre">
+          <li v-for="alimento in searchResults" :key="alimento.id">
             {{ alimento.nombre }}
             <input class="food-quantity" type="number" v-model="alimento.cantidad" min="0" step="25" />
             <button class="add-food" @click="agregarAlimento(alimento)">Añadir</button>
@@ -30,7 +30,7 @@
           </tr>
           </thead>
           <tbody id="table-body">
-            <tr v-for="alimento in selectedFoods" :key="alimento.nombre">
+            <tr v-for="alimento in selectedFoods" :key="alimento.id">
               <td>{{ alimento.nombre }}</td>
               <td>{{ alimento.cantidad }}</td>
               <td>{{ alimento.calorias * alimento.cantidad / 100 }}</td>
@@ -51,30 +51,65 @@
           </tbody>
         </table>
       </div>
+      <div v-if="selectedFoods.length >= 2">
+        <h1>Recetas</h1>
+        <div v-for="receta in selectedRecetas" class="card">
+          <div class="card-container">
+            <div class="card-header">
+              <img class="card-image" :src="getImatgeUrl(receta.url)" alt="">
+            </div>
+            <div class="card-body">
+              <h2>{{ receta.titulo }}</h2>
+              <ul>
+                <li v-for="(ingrediente, index) in receta.ingredientes" :key="index">
+                  Nombre: {{ Object.keys(ingrediente)[0] }}
+                  Cantidad: {{ Object.values(ingrediente)[0] }}
+                </li>
+              </ul>
+              <h3>Total Calorías: {{ receta.calorias }}</h3>
+            </div>
+            <div class="card-footer" style="display: contents">
+              <button class="green-button">Ir a la receta</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import inici from '../components/inici.vue'
-
+import inici from '../components/inici.vue';
 export default {
   data() {
     return {
+      recetas: [
+        {id: 1, titulo: 'Pollo al yogur', ingredientes: [{Yogur: 100}, {Pollo: 200}], calorias: 400, url: "recetapollo.jpg"}
+
+      ],
       alimentos: [
-        { nombre: "Manzana", cantidad: 100, calorias: 95, hidratos: 25, grasas: 0, proteina: 1 },
-        { nombre: "Pera", cantidad: 100, calorias: 85, hidratos: 22, grasas: 0, proteina: 1 },
-        { nombre: "Leche", cantidad: 100, calorias: 150, hidratos: 12, grasas: 8, proteina: 8 },
-        { nombre: "Yogur", cantidad: 100, calorias: 110, hidratos: 10, grasas: 2, proteina: 12 },
-        { nombre: "Pollo", cantidad: 100, calorias: 165, hidratos: 0, grasas: 6, proteina: 31 },
-        { nombre: "Arroz", cantidad: 100, calorias: 205, hidratos: 45, grasas: 0, proteina: 4 }
+        { id: 1, nombre: "Manzana", cantidad: 100, calorias: 95, hidratos: 25, grasas: 0, proteina: 1 },
+        { id: 2, nombre: "Pera", cantidad: 100, calorias: 85, hidratos: 22, grasas: 0, proteina: 1 },
+        { id: 3, nombre: "Leche", cantidad: 100, calorias: 150, hidratos: 12, grasas: 8, proteina: 8 },
+        { id: 4, nombre: "Yogur", cantidad: 100, calorias: 110, hidratos: 10, grasas: 2, proteina: 12 },
+        { id: 5, nombre: "Pollo", cantidad: 100, calorias: 165, hidratos: 0, grasas: 6, proteina: 31 },
+        { id: 6, nombre: "Arroz", cantidad: 100, calorias: 205, hidratos: 45, grasas: 0, proteina: 4 }
       ],
       searchQuery: "",
       searchResults: [],
-      selectedFoods: []
+      selectedFoods: [],
+      selectedRecetas: []
     };
   },
   methods: {
+    buscarRecetas() {
+      const ingredientesSeleccionados = this.selectedFoods.map(alimento => alimento.nombre);
+
+      this.selectedRecetas = this.recetas.filter(receta => {
+        const ingredientesReceta = receta.ingredientes.map(ingrediente => Object.keys(ingrediente)[0]);
+        return ingredientesSeleccionados.every(ingrediente => ingredientesReceta.includes(ingrediente));
+      });
+    },
     buscarAlimentos() {
       const query = this.searchQuery.trim();
       if (query === "") {
@@ -97,7 +132,10 @@ export default {
       if (index !== -1) {
         this.selectedFoods.splice(index, 1);
       }
-    }
+    },
+    getImatgeUrl(url) {
+      return require(`../assets/${url}`);
+    },
   },
   computed: {
     totalCalorias() {
@@ -121,9 +159,49 @@ export default {
       }, 0);
     },
   },
+  watch: {
+    selectedFoods: {
+      handler: 'buscarRecetas',
+      deep: true
+    }
+  }
 }
 </script>
 
 <style scoped>
   @import '../../styles/calculadora.css';
+  .card {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+  }
+  .card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card-header {
+    margin-bottom: 8px;
+  }
+
+  .card-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Ajusta la imagen al contenedor manteniendo la relación de aspecto */
+  }
+  .green-button {
+    background-color: green;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    align-self: flex-end; /* Alinea el botón a la derecha del contenedor */
+  }
+
+  .green-button:hover {
+    background-color: darkgreen;
+  }
 </style>

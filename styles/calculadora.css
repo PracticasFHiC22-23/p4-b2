@@ -1,5 +1,7 @@
-* {
-    box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+*{
+  font-family: 'Open Sans', sans-serif;
+  box-sizing: border-box;
 }
 
 body {
@@ -34,7 +36,7 @@ h1 {
     padding: 10px;
     border: none;
     border-radius: 0 5px 5px 0;
-    background-color: #008CBA;
+    background-color: #FF6B6B;
     color: #fff;
     font-size: 16px;
     cursor: pointer;
@@ -93,11 +95,14 @@ td {
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ccc;
+    border-radius: 5px;
+
 }
 
 th {
-    background-color: #008CBA;
+    background-color: #FF6B6B;
     color: #fff;
+
 }
 
 td:last-child {

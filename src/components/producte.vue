@@ -88,15 +88,19 @@ export default {
       }
     },
   methods: {
-    getImatgeUrl(url){
+    getImatgeUrl(url) {
       return require(`../assets/${url}`);
-    }
-
+    },
   }
 
 }
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+* {
+  font-family: 'Open Sans', sans-serif;
+  box-sizing: border-box;
+}
 
 </style>

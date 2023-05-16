@@ -36,7 +36,7 @@
           <li class="dropdown" v-for="item in navegacion">
             <button :href="item.urlNav">{{ item.texto }}</button>
             <div class="dropdown-menu">
-              <a v-for="producto in item.productos" :href="producto.url" @click="redireccionar(producto.url)">{{ producto.nombre }}</a>
+              <a v-for="producto in item.productos" @click="redireccionar(producto.url)">{{ producto.nombre }}</a>
             </div>
           </li>
         </ul>
@@ -44,7 +44,7 @@
       <div class="navbar-right">
         <ul>
           <li v-for="(obj, index) in objetivos" :key="index">
-            <button @click="redireccionar(obj.url)" class="navbar-btn">{{ obj.texto }}</button>
+            <button @click="isPremium(obj)" class="navbar-btn">{{ obj.texto }}</button>
           </li>
         </ul>
       </div>
@@ -74,6 +74,11 @@ export default {
     return {
       carrito: carrito,
       perfil: perfil,
+      user: 'test',
+      usuarios: [
+        {name: 'test', premium: true},
+        {name: 'test1', premium: false}
+      ],
       logo: logo,
       // Modificar todos los ejemplos de productos etc...no meter nutricion.html y demas en una carpeta porque no te funcionara la parte de pillar los demas archivos
       // Hacer paginas de Nutricion, Ropa, Accesorios, Blog y rellenar con un par de objetos, lo que se puede hacer es:
@@ -90,8 +95,8 @@ export default {
         {nombre: 'Cerrar Sesion', parametroPerfil: 'cerrarsesion'}
       ],
       objetivos: [
-        { texto: 'Objetivos', url: '/objetivos' },
-        { texto: 'Calculadora', url: '/calculadora' }
+        { texto: 'Objetivos', url: '/objetivos', premium: false},
+        { texto: 'Calculadora', url: '/calculadora', premium: true }
       ],
       busqueda: "",
       productos: [
@@ -105,8 +110,21 @@ export default {
     }
   },
   methods: {
+    isPremium(obj) {
+      if (!this.usuarioPremium() && obj.premium) {
+        // Mostrar un mensaje para animar al usuario a hacerse premium
+        alert('Hazte premium para acceder a esta funcionalidad');
+      }else{
+        return this.redireccionar(obj.url);
+      }
+    },
     irPerfil(){
       router.push('/perfil');
+    },
+    usuarioPremium(){
+      const usuarioRegistrado = this.usuarios.find(user => user.name === this.user);
+      return usuarioRegistrado.premium;
+
     },
     irCalculadora(){
       router.push('/calculadora');
