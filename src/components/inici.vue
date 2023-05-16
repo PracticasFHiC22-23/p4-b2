@@ -2,11 +2,10 @@
   <div>
     <div class="navbar-first">
       <div class="logo">
-        <a href="./index.html">
+        <a href="/">
           <img :src="logo" alt="Logo">
         </a>
       </div>
-
       <div class="search-bar" id="searchProduct">
         <input type="text" id="search-product" placeholder="Buscar..." v-model="busqueda" @input="buscarProductos">
         <button id="search-button-product" @click="buscarProductos">Buscar</button>
@@ -19,7 +18,6 @@
           <p v-else>No se encontraron productos.</p>
         </div>
       </div>
-
       <div class="profile-bar">
         <div class="profile-container">
           <img :src="perfil">

@@ -5,7 +5,7 @@
         <img src="../assets/whey-ofert.jpg">
       </div>
       <div class="producto-info">
-        <h3><a href="#">Whey Gold Standard</a></h3>
+        <h3><a @click="irProducte('Whey Gold Standard')">Whey Gold Standard</a></h3>
         <p>Precio: 15.99€</p>
       </div>
     </div>
@@ -14,7 +14,7 @@
         <img src="../assets/creatina.jpg">
       </div>
       <div class="producto-info">
-        <h3><a href="#">Creatina MonoHydrate BioTech</a></h3>
+        <h3><a @click="irProducte('Creatina MonoHydrate BioTech')">Creatina MonoHydrate BioTech</a></h3>
         <p>Precio: 39.99€</p>
       </div>
     </div>
@@ -23,7 +23,7 @@
         <img src="../assets/creatina2.jpg">
       </div>
       <div class="producto-info">
-        <h3><a href="#">Creatine MonoHydrate Drasanvi</a></h3>
+        <h3><a @click="irProducte('Creatine MonoHydrate Drasanvi')">Creatine MonoHydrate Drasanvi</a></h3>
         <p>Precio: 49.99€</p>
       </div>
     </div>
@@ -32,7 +32,7 @@
         <img src="../assets/trembolona.jpg">
       </div>
       <div class="producto-info">
-        <h3><a href="#">Trembolona</a></h3>
+        <h3><a @click="irProducte('Trembolona')">Trembolona</a></h3>
         <p>Precio: 15.99€</p>
       </div>
     </div>
@@ -40,8 +40,17 @@
 </template>
 
 <script>
+import producte from "./producte";
+import router from "../router";
+
 export default {
-  name: "ofertas"
+  name: "ofertas",
+  methods: {
+    irProducte(name){
+      router.push('/producte/'+ name);
+    },
+
+  }
 }
 </script>
 
