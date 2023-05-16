@@ -4,6 +4,7 @@ import calculadora from "../components/calculadora";
 import inici from '../components/inici';
 import carrito from "../components/carrito";
 import producte from "../components/producte";
+import perfil from "../components/perfil";
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       name: 'producte',
       component: producte,
       props: true
+    },
+    {
+      path: '/perfil',
+      name: 'perfil',
+      component: perfil
     }
   ]
 })

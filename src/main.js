@@ -9,6 +9,7 @@ import inici from "./components/inici"
 import carrito from "./components/carrito";
 import producte from "./components/producte";
 import review from "./components/review";
+import perfil from "./components/perfil";
 
 Vue.config.productionTip = false
 
@@ -18,6 +19,8 @@ Vue.component('inici', inici)
 Vue.component('carrito', carrito)
 Vue.component('producte', producte)
 Vue.component('review', review)
+Vue.component('perfil', perfil)
+
 
 /* eslint-disable no-new */
 new Vue({
