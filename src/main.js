@@ -7,6 +7,7 @@ import banner from "./components/banner";
 import ofertas from "./components/ofertas";
 import inici from "./components/inici"
 import carrito from "./components/carrito";
+import perfil from "./components/perfil";
 
 Vue.config.productionTip = false
 
@@ -14,6 +15,7 @@ Vue.component('banner', banner)
 Vue.component('ofertas', ofertas)
 Vue.component('inici', inici)
 Vue.component('carrito', carrito)
+Vue.component('perfil', perfil)
 
 /* eslint-disable no-new */
 new Vue({

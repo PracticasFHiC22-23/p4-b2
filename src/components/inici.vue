@@ -13,7 +13,7 @@
         <div id="dropdown-search" v-show="mostrarDropdown">
           <ul id="product-list" v-if="resultados.length">
             <li v-for="producto in resultados" :key="producto.id">
-              <a @click="producto.url === './objetivos' ? irCarrito() : irCalculadora()">{{ producto.nombre }}</a>
+              <a @click="redireccionar(producto.url)"/a>
             </li>
           </ul>
           <p v-else>No se encontraron productos.</p>
@@ -21,11 +21,14 @@
       </div>
 
       <div class="profile-bar">
+        <div class="profile-container">
+          <img :src="perfil">
+          <div class="dropdown-menu-perfil">
+            <a v-for="perfil in perfilnav" :key="perfil.url" :href="perfil.url" @click="redireccionar(perfil.url)">{{perfil.nombre}}</a>
+          </div>
+        </div>
         <a>
-          <img :src="perfil" alt="Perfil">
-        </a>
-        <a>
-          <img :src="carrito" @click="irCarrito" alt="Carrito">
+          <img :src="carrito" alt="Carrito">
         </a>
       </div>
     </div>
@@ -35,7 +38,7 @@
           <li class="dropdown" v-for="item in navegacion">
             <button :href="item.urlNav">{{ item.texto }}</button>
             <div class="dropdown-menu">
-              <a v-for="producto in item.productos" :href="producto.url">{{ producto.nombre }}</a>
+              <a v-for="producto in item.productos" :href="producto.url" @click="redireccionar(producto.url)">{{ producto.nombre }}</a>
             </div>
           </li>
         </ul>
@@ -43,7 +46,7 @@
       <div class="navbar-right">
         <ul>
           <li v-for="(obj, index) in objetivos" :key="index">
-            <button @click="obj.url === './objetivos' ? irCarrito() : irCalculadora()" class="navbar-btn">{{ obj.texto }}</button>
+            <button @click="redireccionar(obj.url)" class="navbar-btn">{{ obj.texto }}</button>
           </li>
         </ul>
       </div>
@@ -83,19 +86,24 @@ export default {
         { texto: 'Accesorios', urlNav: '#', productos: [] },
         { texto: 'Blog', urlNav: '#', productos: []}
       ],
+      perfilnav : [
+        {nombre: 'Editar Perfil', url: '/perfil'},
+        {nombre: 'Mis Pedidos', url: '#'},
+        {nombre: 'Cerrar Sesion', url: '#'}
+      ],
       objetivos: [
-        { texto: 'Objetivos', url: './objetivos' },
-        { texto: 'Calculadora', url: './calculadora' }
+        { texto: 'Objetivos', url: '/objetivos' },
+        { texto: 'Calculadora', url: '/calculadora' }
       ],
       busqueda: "",
       productos: [
-        {nombre: "Creatina Creapure", url: './calculadora'},
-        {nombre: "Creatina Monohydrate", url: './calculadora'},
-        {nombre: "Trembolona", url: './calculadora'}
+        {nombre: "Creatina Creapure", url: '/calculadora'},
+        {nombre: "Creatina Monohydrate", url: '/calculadora'},
+        {nombre: "Trembolona", url: '/calculadora'}
       ],
       resultados : [],
       mostrarDropdown: false,
-
+      dropdownOpen: false
     }
   },
   methods: {
@@ -104,6 +112,9 @@ export default {
     },
     irCarrito(){
       router.push('/carrito');
+    },
+    redireccionar(url){
+      this.$router.push(url);
     },
     buscarProductos() {
       this.resultados = []
@@ -119,6 +130,9 @@ export default {
         this.mostrarDropdown = false;
       }
     },
+    toggleDropdown(){
+      this.dropdownOpen = !this.dropdownOpen;
+    }
   }
 }
 </script>
