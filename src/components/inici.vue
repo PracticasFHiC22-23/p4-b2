@@ -22,7 +22,7 @@
         <div class="profile-container">
           <img :src="perfil">
           <div class="dropdown-menu-perfil">
-            <a v-for="perfil in perfilnav" :key="perfil.url" :href="perfil.url" @click="redireccionar(perfil.url)">{{perfil.nombre}}</a>
+            <a v-for="perfil in perfilnav" @click="irPerfil">{{ perfil.nombre }}</a>
           </div>
         </div>
         <a>
@@ -85,9 +85,9 @@ export default {
         { texto: 'Blog', urlNav: '#', productos: []}
       ],
       perfilnav : [
-        {nombre: 'Editar Perfil', url: '/perfil'},
-        {nombre: 'Mis Pedidos', url: '#'},
-        {nombre: 'Cerrar Sesion', url: '#'}
+        {nombre: 'Editar Perfil', parametroPerfil: 'perfil'},
+        {nombre: 'Mis Pedidos', parametroPerfil: 'mispedidos'},
+        {nombre: 'Cerrar Sesion', parametroPerfil: 'cerrarsesion'}
       ],
       objetivos: [
         { texto: 'Objetivos', url: '/objetivos' },
@@ -105,6 +105,9 @@ export default {
     }
   },
   methods: {
+    irPerfil(){
+      router.push('/perfil');
+    },
     irCalculadora(){
       router.push('/calculadora');
     },
