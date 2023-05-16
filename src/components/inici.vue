@@ -12,7 +12,7 @@
         <div id="dropdown-search" v-show="mostrarDropdown">
           <ul id="product-list" v-if="resultados.length">
             <li v-for="producto in resultados" :key="producto.id">
-              <a @click="redireccionar(producto.url)"/a>
+              <a @click="redireccionar(producto.url)"></a>
             </li>
           </ul>
           <p v-else>No se encontraron productos.</p>
@@ -26,7 +26,7 @@
           </div>
         </div>
         <a>
-          <img :src="carrito" alt="Carrito">
+          <img :src="carrito" alt="Carrito" @click="irCarrito">
         </a>
       </div>
     </div>
@@ -112,7 +112,7 @@ export default {
       router.push('/carrito');
     },
     redireccionar(url){
-      this.$router.push(url);
+      router.push(url);
     },
     buscarProductos() {
       this.resultados = []

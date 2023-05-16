@@ -19,7 +19,7 @@
         <input type="text" id="ubicacion" name="ubicacion">
       </div>
       <div class="form-group">
-        <label for="biografia">Biografía:</label>
+        <label>Biografía:</label>
         <textarea id="biografia" name="biografia"></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Guardar Cambios</button>
