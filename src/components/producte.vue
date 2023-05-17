@@ -1,20 +1,26 @@
 <template>
   <div>
     <div><inici :main-page="false"/></div>
-    <div v-if="productoEncontrado">
-      <h1>{{ productoEncontrado.name }}</h1>
-      <div id="product">
-        <img :src="getImatgeUrl(productoEncontrado.urlproduct)" alt="">
+    <div id="product-container">
+      <div id="box">
+        <div class="product-description">
+          <h1>{{ productoEncontrado.name }}</h1>
+          <div id="product">
+            <img :src="getImatgeUrl(productoEncontrado.urlproduct)" alt="" class="product-img">
+          </div>
+          <h2>Description</h2>
+          <div id="text">
+            {{ productoEncontrado.description }}
+          </div>
+        </div>
+        <div class="product-image">
+          <div id="imgUrl">
+            <img :src="getImatgeUrl(productoEncontrado.url)" alt="" class="product-img">
+          </div>
+        </div>
       </div>
-      <h2>Description</h2>
-      <div id="text">
-        {{ productoEncontrado.description }}
-      </div>
-      <div id="imgUrl">
-        <img :src="getImatgeUrl(productoEncontrado.url)" alt="">
-      </div>
+      <review />
     </div>
-    <review />
   </div>
 </template>
 
@@ -102,5 +108,49 @@ export default {
   font-family: 'Open Sans', sans-serif;
   box-sizing: border-box;
 }
+#product-container {
+  margin-top: 3em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 
+#box {
+  display : flex;
+  flex-direction : row;
+
+}
+
+.product-description {
+  flex-basis: 50%;
+  text-align: justify;
+  padding-right: 1em;
+  box-sizing: border-box;
+  margin-left: 8em;
+  margin-right: 8em;
+}
+
+.product-image {
+  flex-basis: 50%;
+  text-align: center;
+}
+
+.product-image .product-img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .product-description,
+  .product-image {
+    flex-basis: 100%;
+    margin-left: 0; /* Elimina el margen izquierdo en dispositivos móviles */
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .product-description {
+    margin-left: 3em; /* Agrega un margen izquierdo de 1em en tablets */
+  }
+}
 </style>

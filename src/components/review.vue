@@ -1,8 +1,8 @@
 <template>
   <div>
     <h2>Reviews</h2>
-    <ul>
-      <li v-for="review in reviews" :key="review.id">
+    <div class="card-container">
+      <div class="card" v-for="review in reviews" :key="review.id">
         <h3>{{ review.user }}</h3>
         <p>{{ review.comment }}</p>
         <div class="rating">
@@ -15,8 +15,8 @@
             ★
           </span>
         </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -42,6 +42,19 @@ export default {
 </script>
 
 <style scoped>
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 300px;
+  margin: 10px;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+}
+
 .rating {
   font-size: 24px;
   color: #ffd700; /* Color de las estrellas llenas */
