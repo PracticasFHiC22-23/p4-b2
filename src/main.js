@@ -15,6 +15,7 @@ import blog from "./components/blog";
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import BootstrapVue, {BModal, IconsPlugin} from "bootstrap-vue";
+import objetivos from "./components/objetivos";
 
 Vue.config.productionTip = false
 
@@ -27,6 +28,8 @@ Vue.component('review', review)
 Vue.component('perfil', perfil)
 Vue.component('blog', blog)
 Vue.component('b-modal', BModal)
+Vue.component('objetivos', objetivos)
+
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Vuex)

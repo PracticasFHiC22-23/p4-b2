@@ -83,16 +83,11 @@ export default {
       productoEncontrado: null
     }
   },
-  mounted () {
-      const producto = this.productes.find(p => p.name === this.parametro);
-      if (producto) {
-        this.productoEncontrado = producto
-
-      } else {
-        this.productoEncontrado = null
-
-      }
-    },
+  mounted() {
+    const nombreReceta = this.$route.params.parametro;
+    const producto = this.productes.find((p) => p.name === nombreReceta);
+    this.productoEncontrado = producto || null;
+  },
   methods: {
     getImatgeUrl(url) {
       return require(`../assets/${url}`);
