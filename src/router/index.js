@@ -6,6 +6,7 @@ import carrito from "../components/carrito";
 import producte from "../components/producte";
 import perfil from "../components/perfil";
 import blog from "../components/blog"
+import objetivos from "../components/objetivos";
 
 Vue.use(Router)
 
@@ -42,6 +43,11 @@ export default new Router({
       name: 'blog',
       component: blog
     },
+    {
+      path: '/objetivos',
+      name: 'objetivos',
+      component: objetivos
+    }
   ]
 })
 

@@ -131,7 +131,7 @@ export default {
       fecha: '',
       ubicacion: '',
       biografia: '',
-      premium: false,
+      premium: true,
     }
   },
   mounted () {
