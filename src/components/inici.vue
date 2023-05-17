@@ -23,6 +23,10 @@
           <img :src="perfil">
           <div v-if="inicisesion" class="dropdown-menu-perfil">
             <a v-for="perfil in perfilnav" @click="redireccionar(perfil.url)">{{ perfil.nombre }}</a>
+            <a @click="mostrarModalCerrarSesio">Cerrar Sesion</a>
+            <b-modal id="modal-cerrar" title="Cerrar Sesion" ok-title="Cerrar Sesion" cancel-title="Cancelar" @ok="cerrarSesion">
+              <p>¿Estas seguro de que deseas cerrar sesion?</p>
+            </b-modal>
           </div>
           <div v-if="!inicisesion" class="dropdown-menu-perfil">
             <a v-for="perfil in perfilnou" @click="mostrarModalInicioSesion">{{ perfil.nombre }}</a>
@@ -103,11 +107,10 @@ export default {
       ],
       perfilnav : [
         {nombre: 'Editar Perfil', url: '/perfil'},
-        {nombre: 'Mis Pedidos', url: '/perfil'},
-        {nombre: 'Cerrar Sesion', url: '/cerrarsesion'}
+        {nombre: 'Mis Pedidos', url: '/perfil'}
       ],
       perfilnou : [
-        {nombre: 'Inici Sesio', url: '/perfil'}
+        {nombre: 'Inicio Sesion', url: '/perfil'}
       ],
       objetivos: [
         { texto: 'Objetivos', url: '/objetivos', premium: false},
@@ -179,8 +182,15 @@ export default {
     mostrarModalInicioSesion(){
       this.$bvModal.show('modal-sesio');
     },
+    mostrarModalCerrarSesio(){
+      this.$bvModal.show('modal-cerrar')
+    },
     noMostrarModalInicioSesion(){
       this.$bvModal.hide('modal-sesio');
+    },
+    cerrarSesion() {
+      this.inicisesion = false;
+      this.$store.commit('setUser', {});
     },
     inicioSesion() {
       const storedUser = localStorage.getItem('user');
