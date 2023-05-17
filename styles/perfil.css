@@ -57,7 +57,6 @@ textarea {
 }
 
 .btn-primary {
-  margin-right: 50px;
   color: #fff;
   background-color: #007bff;
 }
@@ -65,4 +64,34 @@ textarea {
 
 .btn-primary:hover {
   background-color: #0056b3;
+}
+
+.premium-label{
+  display:inline-block;
+}
+.checkbox-label {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-label input[type="checkbox"] {
+  order: 1;
+  margin-right: 5px;
+}
+
+.checkbox-label .checkbox-text {
+  order: 2;
+}
+
+.custom-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  color: red;
+}
+
+.custom-close-space {
+  margin-bottom: 10px;
 }

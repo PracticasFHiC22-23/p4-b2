@@ -12,7 +12,7 @@
         <div id="dropdown-search" v-show="mostrarDropdown">
           <ul id="product-list" v-if="resultados.length">
             <li v-for="producto in resultados" :key="producto.id">
-              <a @click="redireccionar(producto.url)"></a>
+              <a @click="redireccionar(producto.url)">{{ producto.nombre }}</a>
             </li>
           </ul>
           <p v-else>No se encontraron productos.</p>
@@ -21,9 +21,24 @@
       <div class="profile-bar">
         <div class="profile-container">
           <img :src="perfil">
-          <div class="dropdown-menu-perfil">
-            <a v-for="perfil in perfilnav" @click="irPerfil">{{ perfil.nombre }}</a>
+          <div v-if="inicisesion" class="dropdown-menu-perfil">
+            <a v-for="perfil in perfilnav" @click="redireccionar(perfil.url)">{{ perfil.nombre }}</a>
           </div>
+          <div v-if="!inicisesion" class="dropdown-menu-perfil">
+            <a v-for="perfil in perfilnou" @click="mostrarModalInicioSesion">{{ perfil.nombre }}</a>
+          </div>
+          <b-modal id="modal-sesio" title="Inicio Sesion" ok-title="Iniciar Sesion" cancel-title="Registrar" @ok="inicioSesion" @cancel="registrarUsuario">
+            <form>
+              <div class="form-group">
+                <label for="username">Usuario</label>
+                <input type="text" class="form-control" id="username" v-model="nombre">
+              </div>
+              <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" class="form-control" id="password" v-model="password">
+              </div>
+            </form>
+          </b-modal>
         </div>
         <a>
           <img :src="carrito" alt="Carrito" @click="irCarrito">
@@ -75,11 +90,8 @@ export default {
       carrito: carrito,
       perfil: perfil,
       user: 'test',
-      usuarios: [
-        {name: 'test', premium: true},
-        {name: 'test1', premium: false}
-      ],
       logo: logo,
+      inicisesion: false,
       // Modificar todos los ejemplos de productos etc...no meter nutricion.html y demas en una carpeta porque no te funcionara la parte de pillar los demas archivos
       // Hacer paginas de Nutricion, Ropa, Accesorios, Blog y rellenar con un par de objetos, lo que se puede hacer es:
       // Unos datos en un js, que tengan un tipo: Nutricion/Ropa/Accesorios/Blog, y ahi solo pillar de esos tipos y q se impriman dichos objetos
@@ -90,9 +102,12 @@ export default {
         { texto: 'Blog', urlNav: '#', productos: []}
       ],
       perfilnav : [
-        {nombre: 'Editar Perfil', parametroPerfil: 'perfil'},
-        {nombre: 'Mis Pedidos', parametroPerfil: 'mispedidos'},
-        {nombre: 'Cerrar Sesion', parametroPerfil: 'cerrarsesion'}
+        {nombre: 'Editar Perfil', url: '/perfil'},
+        {nombre: 'Mis Pedidos', url: '/perfil'},
+        {nombre: 'Cerrar Sesion', url: '/cerrarsesion'}
+      ],
+      perfilnou : [
+        {nombre: 'Inici Sesio', url: '/perfil'}
       ],
       objetivos: [
         { texto: 'Objetivos', url: '/objetivos', premium: false},
@@ -106,25 +121,34 @@ export default {
       ],
       resultados : [],
       mostrarDropdown: false,
-      dropdownOpen: false
+      dropdownOpen: false,
+      nombre: '',
+      password: '',
+      email: '',
+      fecha: '',
+      ubicacion: '',
+      biografia: '',
+      premium: false,
     }
+  },
+  mounted () {
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.inicisesion = user.inicisesion || false;
+    this.nombre = user.nombre || '';
+    this.email = user.email || '';
+    this.fecha = user.fecha || '';
+    this.ubicacion = user.ubicacion || '';
+    this.biografia = user.biografia || '';
+    this.premium = user.premium || false;
   },
   methods: {
     isPremium(obj) {
-      if (!this.usuarioPremium() && obj.premium) {
+      if (!this.premium) {
         // Mostrar un mensaje para animar al usuario a hacerse premium
         alert('Hazte premium para acceder a esta funcionalidad');
       }else{
         return this.redireccionar(obj.url);
       }
-    },
-    irPerfil(){
-      router.push('/perfil');
-    },
-    usuarioPremium(){
-      const usuarioRegistrado = this.usuarios.find(user => user.name === this.user);
-      return usuarioRegistrado.premium;
-
     },
     irCalculadora(){
       router.push('/calculadora');
@@ -151,6 +175,54 @@ export default {
     },
     toggleDropdown(){
       this.dropdownOpen = !this.dropdownOpen;
+    },
+    mostrarModalInicioSesion(){
+      this.$bvModal.show('modal-sesio');
+    },
+    noMostrarModalInicioSesion(){
+      this.$bvModal.hide('modal-sesio');
+    },
+    inicioSesion() {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+        user.inicisesion = true;
+        this.inicisesion = true;
+        this.$store.commit('setUser', user);
+      } else {
+        const newUser = {
+          nombre: this.nombre,
+          password: this.password,
+          email: '',
+          fecha: '',
+          ubicacion: '',
+          biografia: '',
+          inicisesion: true,
+          premium: false,
+
+        };
+        this.inicisesion = true;
+        localStorage.setItem('user', JSON.stringify(newUser));
+        this.$store.commit('setUser', newUser);
+      }
+      this.$router.push('/perfil');
+    },
+    registrarUsuario() {
+      const newUser = {
+        username: this.username,
+        password: this.password,
+        biography: '',
+        email: '',
+        fecha: '',
+        ubicacion: '',
+        biografia: '',
+        inicisesion: true,
+        premium: false,
+      };
+      this.inicisesion = true;
+      localStorage.setItem('user', JSON.stringify(newUser));
+      this.$store.commit('setUser', newUser);
+      this.$router.push('/perfil');
     }
   }
 }
