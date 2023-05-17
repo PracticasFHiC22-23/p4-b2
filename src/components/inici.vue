@@ -22,6 +22,7 @@
         <div class="profile-container">
           <img :src="perfil">
           <div v-if="inicisesion" class="dropdown-menu-perfil">
+            <p> Hola {{nombre}} </p>
             <a v-for="perfil in perfilnav" @click="redireccionar(perfil.url)">{{ perfil.nombre }}</a>
             <a @click="mostrarModalCerrarSesio">Cerrar Sesion</a>
             <b-modal id="modal-cerrar" title="Cerrar Sesion" ok-title="Cerrar Sesion" cancel-title="Cancelar" @ok="cerrarSesion">
@@ -55,7 +56,7 @@
           <li class="dropdown" v-for="item in navegacion">
             <button :href="item.urlNav">{{ item.texto }}</button>
             <div class="dropdown-menu">
-              <a v-for="producto in item.productos" @click="redireccionar(producto.url)">{{ producto.nombre }}</a>
+              <a v-for="producto in item.productos" @click="irProducte(producto.nombre)">{{ producto.nombre }}</a>
             </div>
           </li>
         </ul>
@@ -79,6 +80,7 @@ import logo from '../assets/logo.png'
 import router from '../router';
 import banner from '../components/banner.vue';
 import ofertas from "../components/ofertas.vue";
+import producte from "./producte";
 
 export default {
   name: "inici",
@@ -100,10 +102,11 @@ export default {
       // Hacer paginas de Nutricion, Ropa, Accesorios, Blog y rellenar con un par de objetos, lo que se puede hacer es:
       // Unos datos en un js, que tengan un tipo: Nutricion/Ropa/Accesorios/Blog, y ahi solo pillar de esos tipos y q se impriman dichos objetos
       navegacion: [
-        { texto: 'Nutricion', urlNav: './nutricion.html', productos: [{nombre: 'Ejemplo1', url: './creatine-monohydrate-biotech-offer.html'}, {nombre: 'Ejemplo2', url: './creatine-monohydrate-biotech-offer.html'}] },
-        { texto: 'Ropa', urlNav: '#', productos: [] },
-        { texto: 'Accesorios', urlNav: '#', productos: [] },
-        { texto: 'Blog', urlNav: '#', productos: []}
+        { texto: 'Proteina', urlNav: './nutricion.html', productos: [{nombre: 'Whey Gold Standard'}, {nombre: 'Caseina y Proteina'}, {nombre: 'Isolate'}, {nombre: 'Creatina'}, {nombre: 'Creatine MonoHydrate Drasanvi'}, {nombre: 'Creatina MonoHydrate BioTech'}] },
+        { texto: 'Aminoacidos', urlNav: '#', productos: [{nombre: 'BCAA'}, {nombre: 'Glutamina'}, {nombre: 'Arginina'}] },
+        { texto: 'Pre-Workout', urlNav: '#', productos: [{nombre: 'Gominolas'}, {nombre: 'Mezcla'}] },
+        { texto: 'Post-Workout', urlNav: '#', productos: [{nombre: 'Gominolas'}, {nombre: 'Mezcla'}]},
+        { texto: 'Vitaminas', urlNav: '#', productos: [{nombre: 'Colageno'},{nombre: 'Perdida de Peso'}, {nombre: 'Trembolona'}]}
       ],
       perfilnav : [
         {nombre: 'Editar Perfil', url: '/perfil'},
@@ -127,6 +130,7 @@ export default {
       dropdownOpen: false,
       nombre: '',
       password: '',
+      contra: '',
       email: '',
       fecha: '',
       ubicacion: '',
@@ -196,6 +200,7 @@ export default {
       const storedUser = localStorage.getItem('user');
       if (storedUser) {
         const user = JSON.parse(storedUser);
+
         user.inicisesion = true;
         this.inicisesion = true;
         this.$store.commit('setUser', user);
@@ -219,7 +224,7 @@ export default {
     },
     registrarUsuario() {
       const newUser = {
-        username: this.username,
+        nombre: this.nombre,
         password: this.password,
         biography: '',
         email: '',
@@ -233,6 +238,10 @@ export default {
       localStorage.setItem('user', JSON.stringify(newUser));
       this.$store.commit('setUser', newUser);
       this.$router.push('/perfil');
+    },
+    irProducte(name){
+      router.push('/producte/'+ name);
+      window.location.reload();
     }
   }
 }

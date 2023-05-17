@@ -37,7 +37,7 @@ h1 {
     border: none;
     border-radius: 0 5px 5px 0;
     background-color: #FF6B6B;
-    color: #fff;
+    color: white;
     font-size: 16px;
     cursor: pointer;
 }
@@ -57,23 +57,21 @@ h1 {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid white;
     margin-bottom: 10px;
     border-radius: 5px;
 }
 
 .food-quantity {
-  /* Agrega aquí el estilo deseado para el input type number */
   width: 50px;
   height: 30px;
-  border: 1px solid #ccc;
+  border: 1px solid white;
   border-radius: 5px;
   padding: 5px;
 }
 
 .add-food {
-  /* Agrega aquí el estilo deseado para el botón */
-  background-color: #4CAF50;
+  background-color: limegreen;
   color: white;
   border: none;
   border-radius: 5px;
@@ -101,7 +99,7 @@ td {
 
 th {
     background-color: #FF6B6B;
-    color: #fff;
+    color: white;
 
 }
 

@@ -6,7 +6,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #fff;
+    background-color: white;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     padding: 10px;
     height: 150px;
@@ -24,7 +24,7 @@
     align-items: center;
     width: 360px;
     height: 44px;
-    position: relative; /* Agregamos posición relativa para que el dropdown sea relativo a este elemento */
+    position: relative;
 }
 
 .search-bar input[type="text"] {
@@ -40,7 +40,7 @@
     height: 100%;
     padding: 12px 20px;
     background-color: #FF6B6B;
-    color: #fff;
+    color: white;
     font-weight: 500;
     border: none;
     border-radius: 0 20px 20px 0;
@@ -50,10 +50,10 @@
 
 #dropdown-search {
     position: absolute;
-    top: 100%; /* Cambiamos la posición para que el dropdown esté debajo del input */
+    top: 100%;
     left: 0;
-    width: 100%; /* Ancho del dropdown */
-    background-color: #fff;
+    width: 100%;
+    background-color: white;
     border: 1px solid #ccc;
     border-top: none;
     border-radius: 0 0 5px 5px;

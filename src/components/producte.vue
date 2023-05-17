@@ -17,9 +17,18 @@
           <div id="imgUrl">
             <img :src="getImatgeUrl(productoEncontrado.url)" alt="" class="product-img">
           </div>
+          <b-button v-b-modal.modal-1 type="button" class="btn btn-primary" @click="showModal = true">Agregar al carrito</b-button>
+
+          <b-modal id="modal-1" v-if="showModal" title="Confirmar compra" ok-title="Confirmar" cancel-title="Cancelar" @ok="comprarProducto">
+            ¿Estás seguro de que deseas realizar la compra de {{productoEncontrado.nombre}} ?
+          </b-modal>
+          <div v-if="compraRealizada" class="alert alert-success" role="alert">
+            ¡Compra realizada con éxito!
+          </div>
         </div>
       </div>
       <review />
+
     </div>
   </div>
 </template>
@@ -34,6 +43,8 @@ export default {
   props: ['parametro'],
   data (){
     return {
+      showModal: false,
+      compraRealizada : false,
       productes: [
         {name: 'Whey Gold Standard', description: 'Whey Gold Standard es un producto de suplemento nutricional de alta calidad diseñado especialmente para los entusiastas del fitness y los atletas que buscan maximizar su rendimiento y alcanzar sus objetivos de construcción muscular. Este producto se ha convertido en un referente en la industria de los suplementos debido a su fórmula avanzada y a sus beneficios excepcionales.\n' +
             '\n' +
@@ -92,60 +103,18 @@ export default {
     getImatgeUrl(url) {
       return require(`../assets/${url}`);
     },
+    comprarProducto(){
+      this.compraRealizada = true;
+      this.showModal = false;
+      setTimeout(() => {
+        this.compraRealizada =false;
+      }, 5000);
+    }
   }
 
 }
 </script>
-
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
-* {
-  font-family: 'Open Sans', sans-serif;
-  box-sizing: border-box;
-}
-#product-container {
-  margin-top: 3em;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-#box {
-  display : flex;
-  flex-direction : row;
-
-}
-
-.product-description {
-  flex-basis: 50%;
-  text-align: justify;
-  padding-right: 1em;
-  box-sizing: border-box;
-  margin-left: 8em;
-  margin-right: 8em;
-}
-
-.product-image {
-  flex-basis: 50%;
-  text-align: center;
-}
-
-.product-image .product-img {
-  max-width: 100%;
-  height: auto;
-}
-
-@media (max-width: 768px) {
-  .product-description,
-  .product-image {
-    flex-basis: 100%;
-    margin-left: 0; /* Elimina el margen izquierdo en dispositivos móviles */
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .product-description {
-    margin-left: 3em; /* Agrega un margen izquierdo de 1em en tablets */
-  }
-}
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+  @import '../../styles/producte.css';
 </style>

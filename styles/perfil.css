@@ -34,7 +34,7 @@ input,
 textarea {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid white;
   border-radius: 4px;
   box-sizing: border-box;
 }
@@ -57,8 +57,8 @@ textarea {
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #007bff;
+  color: white;
+  background-color: dodgerblue;
 }
 
 

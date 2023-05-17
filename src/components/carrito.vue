@@ -40,11 +40,19 @@
           </tr>
           </tbody>
         </table>
+        <div v-if="alertVisible" class="alert alert-success" role="alert">
+          ¡Compra realizada con éxito!
+        </div>
         <div style="display: flex; justify-content: flex-end; margin-top: 20px">
-          <button class="btn-finalizar-compra" id="btn-finalizar-compra" @click="finalizarCompra">Finalizar Compra</button>
+          <button class="btn-finalizar-compra" id="btn-finalizar-compra" @click="confirmarFinalizarCompra">Finalizar Compra</button>
         </div>
       </div>
     </div>
+
+    <b-modal v-model="modalVisible" title="Confirmar Eliminación" @ok="eliminarFilaConfirmada">
+      ¿Está seguro de que desea eliminar esta fila?
+    </b-modal>
+
   </div>
 </template>
 
@@ -71,9 +79,11 @@ export default {
           precio: 35.0,
           imagen: creatinaCreapure,
           mostrarEliminar: false
-        },
+        }
       ],
-      total: 0
+      total: 0,
+      modalVisible: false,
+      alertVisible: false
     };
   },
   computed: {
@@ -84,12 +94,14 @@ export default {
   },
   methods: {
     eliminarFila(producto) {
-      const confirmacion = confirm('¿Está seguro de que desea eliminar esta fila?');
-      if (confirmacion) {
-        const index = this.productos.indexOf(producto);
-        this.productos.splice(index, 1);
-        this.calcularTotal();
-      }
+      this.modalVisible = true;
+      this.productoEliminar = producto;
+    },
+    eliminarFilaConfirmada() {
+      const index = this.productos.indexOf(this.productoEliminar);
+      this.productos.splice(index, 1);
+      this.calcularTotal();
+      this.modalVisible = false;
     },
     calcularTotal() {
       this.total = 0;
@@ -99,12 +111,31 @@ export default {
         this.total += cantidad * precio;
       });
     },
+    confirmarFinalizarCompra() {
+      this.$bvModal.msgBoxConfirm('¿Estás seguro de finalizar la compra?', {
+        title: 'Confirmar',
+        okVariant: 'primary',
+        okTitle: 'Aceptar',
+        cancelTitle: 'Cancelar',
+        centered: true
+      })
+        .then(value => {
+          if (value) {
+            this.finalizarCompra();
+          }
+        })
+        .catch(error => {
+          // Error al mostrar el cuadro de diálogo
+          console.error(error);
+        });
+    },
     finalizarCompra() {
-      if (confirm("¿Estás seguro de finalizar la compra?")) {
-        alert("Tu paquete está siendo enviado");
-        this.productos = [];
-        this.calcularTotal();
-      }
+      this.alertVisible = true;
+      this.productos = [];
+      this.calcularTotal();
+      setTimeout(() => {
+        this.alertVisible =false;
+      }, 5000);
     },
     mostrarBotonEliminar(producto, mostrar) {
       producto.mostrarEliminar = mostrar;
