@@ -5,6 +5,7 @@ import inici from '../components/inici';
 import carrito from "../components/carrito";
 import producte from "../components/producte";
 import perfil from "../components/perfil";
+import blog from "../components/blog"
 
 Vue.use(Router)
 
@@ -35,7 +36,12 @@ export default new Router({
       path: '/perfil',
       name: 'perfil',
       component: perfil
-    }
+    },
+    {
+      path: '/blog/:parametro',
+      name: 'blog',
+      component: blog
+    },
   ]
 })
 

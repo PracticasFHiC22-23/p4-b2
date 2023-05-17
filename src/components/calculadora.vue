@@ -69,7 +69,7 @@
               <h3>Total Calorías: {{ receta.calorias }}</h3>
             </div>
             <div class="card-footer" style="display: contents">
-              <button class="green-button">Ir a la receta</button>
+              <button class="green-button" @click="irBlog(receta.titulo)">Ir a la receta</button>
             </div>
           </div>
         </div>
@@ -80,6 +80,8 @@
 
 <script>
 import inici from '../components/inici.vue';
+import router from "../router";
+
 export default {
   data() {
     return {
@@ -136,6 +138,9 @@ export default {
     getImatgeUrl(url) {
       return require(`../assets/${url}`);
     },
+    irBlog(name) {
+      router.push('/blog/'+ name);
+    }
   },
   computed: {
     totalCalorias() {

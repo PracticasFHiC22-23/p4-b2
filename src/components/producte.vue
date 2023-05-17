@@ -77,7 +77,7 @@ export default {
       productoEncontrado: null
     }
   },
-  mounted: function() {
+  mounted () {
       const producto = this.productes.find(p => p.name === this.parametro);
       if (producto) {
         this.productoEncontrado = producto
