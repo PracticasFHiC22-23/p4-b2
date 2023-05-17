@@ -44,11 +44,23 @@ Vue.prototype.$store = new Vuex.Store({
       location: '',
       biography: '',
       premium: false
-    }
+    },
+    productos: [
+      {
+        nombre: '',
+        cantidad: '',
+        precio: '',
+        urlimagen: '',
+      }
+    ]
+
   },
   mutations: {
     setUser(state, user) {
       state.user = user;
+    },
+    addProducto(state, producto){
+      state.productos.push(producto);
     },
     setPremium(state, premium) {
       state.user.premium = premium;

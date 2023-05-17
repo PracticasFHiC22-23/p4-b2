@@ -175,38 +175,4 @@ export default {
 
 <style scoped>
   @import '../../styles/calculadora.css';
-  .card {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 16px;
-  }
-  .card-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .card-header {
-    margin-bottom: 8px;
-  }
-
-  .card-image {
-    width: 100%;
-    height: auto;
-    object-fit: cover; /* Ajusta la imagen al contenedor manteniendo la relación de aspecto */
-  }
-  .green-button {
-    background-color: green;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    align-self: flex-end; /* Alinea el botón a la derecha del contenedor */
-  }
-
-  .green-button:hover {
-    background-color: darkgreen;
-  }
 </style>

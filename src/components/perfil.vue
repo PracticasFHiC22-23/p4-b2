@@ -22,7 +22,7 @@
             <input type="text" id="ubicacion" name="ubicacion" v-model="ubicacion">
           </div>
           <div class="form-group">
-            <label>Biografía:</label>
+            <label>Datos de envio:</label>
             <textarea id="biografia" name="biografia" v-model="biografia"></textarea>
           </div>
           <div>

@@ -142,17 +142,7 @@ export default {
     }
   },
   mounted() {
-    datos.productos.forEach(producto => {
-      this.productos.push({
-        nombre: producto.nombre,
-        imagen: producto.imagen,
-        cantidad: producto.cantidad,
-        precio: producto.precio,
-        mostrarEliminar: false
-      });
-      this.total += producto.cantidad * producto.precio;
-    });
-    this.calcularTotal();
+
   }
 }
 </script>

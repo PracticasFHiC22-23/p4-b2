@@ -26,10 +26,10 @@ export default {
   data() {
     return {
       reviews: [
-        { id: 1, user: "ArturoPichaCurta", comment: "Comentario 1" },
-        { id: 2, user: "Leuis", comment: "Comentario 2" },
-        { id: 3, user: "Ziji69", comment: "Comentario 3" },
-        { id: 4, user: "NilMaricus", comment: "Comentario 4" }
+        { id: 1, user: "ArturoPichaCurta", comment: "Buen Producto" },
+        { id: 2, user: "Leuis", comment: "Calidad Precio de lkos" },
+        { id: 3, user: "Ziji69", comment: "Ploducto mu balato pa lo que es" },
+        { id: 4, user: "NilFollaPoco", comment: "Me han ayudado mucho con el soporte" }
       ]
     };
   },

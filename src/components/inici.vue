@@ -12,7 +12,7 @@
         <div id="dropdown-search" v-show="mostrarDropdown">
           <ul id="product-list" v-if="resultados.length">
             <li v-for="producto in resultados" :key="producto.id">
-              <a @click="redireccionar(producto.url)">{{ producto.nombre }}</a>
+              <a @click="irProducte(producto.nombre)">{{ producto.nombre }}</a>
             </li>
           </ul>
           <p v-else>No se encontraron productos.</p>
@@ -22,7 +22,6 @@
         <div class="profile-container">
           <img :src="perfil">
           <div v-if="inicisesion" class="dropdown-menu-perfil">
-            <p> Hola {{nombre}} </p>
             <a v-for="perfil in perfilnav" @click="redireccionar(perfil.url)">{{ perfil.nombre }}</a>
             <a @click="mostrarModalCerrarSesio">Cerrar Sesion</a>
             <b-modal id="modal-cerrar" title="Cerrar Sesion" ok-title="Cerrar Sesion" cancel-title="Cancelar" @ok="cerrarSesion">
@@ -121,9 +120,10 @@ export default {
       ],
       busqueda: "",
       productos: [
-        {nombre: "Creatina Creapure", url: '/calculadora'},
-        {nombre: "Creatina Monohydrate", url: '/calculadora'},
-        {nombre: "Trembolona", url: '/calculadora'}
+        {nombre: "Whey Gold Standard"},
+        {nombre: "Creatina MonoHydrate BioTech"},
+        {nombre: "Creatine MonoHydrate Drasanvi"},
+        {nombre: "Trembolona"}
       ],
       resultados : [],
       mostrarDropdown: false,
@@ -193,16 +193,19 @@ export default {
       this.$bvModal.hide('modal-sesio');
     },
     cerrarSesion() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      user.inicisesion = false;
       this.inicisesion = false;
+      localStorage.setItem('user', JSON.stringify(user));
       this.$store.commit('setUser', {});
     },
     inicioSesion() {
       const storedUser = localStorage.getItem('user');
       if (storedUser) {
         const user = JSON.parse(storedUser);
-
         user.inicisesion = true;
         this.inicisesion = true;
+        localStorage.setItem('user', JSON.stringify(user));
         this.$store.commit('setUser', user);
       } else {
         const newUser = {
