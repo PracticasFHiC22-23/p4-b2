@@ -64,7 +64,13 @@ export default {
   name: "ofertas",
   data() {
     return {
-      compraRealizada: false
+      compraRealizada: false,
+      productos: [
+        {nombre: 'Whey Gold Standard', url: 'whey-ofert.jpg', cantidad: 1, precio: 15.99, mostrarEliminar: false},
+        {nombre: 'Creatina MonoHydrate BioTech', url: 'creatina.jpg', cantidad: 1, precio: 39.99, mostrarEliminar: false},
+        {nombre: 'Creatine MonoHydrate Drasanvi', url: 'creatina2.jpg', cantidad: 1, precio: 49.99, mostrarEliminar: false},
+        {nombre: 'Trembolona', url: 'trembolona.jpg', cantidad: 1, precio: 15.99, mostrarEliminar: false}
+      ]
     };
   },
   methods: {
@@ -75,8 +81,9 @@ export default {
       this.compraRealizada = true;
       setTimeout(() => {
         this.compraRealizada =false;
-      }, 5000);
-
+      }, 3000);
+      const product = this.productos.find(p => p.nombre === producto);
+      this.$store.commit('agregarProducto', product)
     }
   }
 }

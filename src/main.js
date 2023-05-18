@@ -38,6 +38,7 @@ Vue.prototype.$store = new Vuex.Store({
   state: {
     user: {
       username: '',
+      inicisesion: false,
       password: '',
       email: '',
       date: '',
@@ -45,26 +46,26 @@ Vue.prototype.$store = new Vuex.Store({
       biography: '',
       premium: false
     },
-    productos: [
-      {
-        nombre: '',
-        cantidad: '',
-        precio: '',
-        urlimagen: '',
-      }
-    ]
-
+    productos: []
   },
   mutations: {
     setUser(state, user) {
       state.user = user;
     },
-    addProducto(state, producto){
-      state.productos.push(producto);
-    },
     setPremium(state, premium) {
       state.user.premium = premium;
     },
+    agregarProducto(state, producto) {
+      const foundIndex = state.productos.findIndex(p => p.nombre === producto.nombre);
+      if (foundIndex !== -1) {
+        state.productos[foundIndex].cantidad += 1;
+      } else {
+        state.productos.push(producto);
+      }
+    },
+    eliminarProductos(state){
+      state.productos = []
+    }
   },
 });
 

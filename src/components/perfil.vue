@@ -7,7 +7,7 @@
         <form id="formulario-edicion">
           <div class="form-group">
             <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required v-model="nombre">
+            <input type="text" id="nombre" name="nombre" required v-model="user.username">
           </div>
           <div class="form-group">
             <label for="email">Email:</label>
@@ -30,10 +30,10 @@
             <b-modal id="modal-guardar" title="Guardar Perfil" ok-title="Confirmar" cancel-title="Cancelar" @ok="confirmarEnvio">
               <p>¿Estás seguro de que deseas guardar tu perfil?</p>
             </b-modal>
-            <template v-if="premium">
-              <div class="premium-label" v-if="premium">
+            <template v-if="this.user.premium">
+              <div class="premium-label" v-if="this.user.premium">
                 <label class="checkbox-label">
-                  <input type="checkbox" v-model="premium" disabled>
+                  <input type="checkbox" v-model="this.user.premium" disabled>
                   <span class="checkbox-text">Usuario Premium</span>
                 </label>
               </div>
@@ -43,8 +43,7 @@
               </b-modal>
             </template>
             <template v-else>
-              <b-button v-if="!premium" v-b-modal.modal-1 type="button" class="btn btn-warning" @click="showModal = true">Hacerte premium</b-button>
-
+              <b-button v-if="!user.premium" v-b-modal.modal-1 type="button" class="btn btn-warning" @click="showModal = true">Hacerte premium</b-button>
               <b-modal id="modal-1" v-if="showModal" title="Aceptar condiciones" ok-title="Aceptar" cancel-title="Cancelar" @ok="aceptarCondiciones" @cancel="showModal = false">
                 <p>Acepta las condiciones para hacerse premium:</p>
                 <ul>
@@ -58,7 +57,6 @@
                 </template>
               </b-modal>
             </template>
-
           </div>
         </form>
       </div>
@@ -73,41 +71,39 @@ export default {
   name: "perfil",
   data() {
     return {
-      nombre: '',
-      email: '',
-      fecha: '',
-      ubicacion: '',
-      biografia: '',
-      premium: false,
+      user: {
+        username: '',
+        inicisesion: false,
+        password: '',
+        email: '',
+        date: '',
+        location: '',
+        biography: '',
+        premium: false
+      },
       showModal: false,
-      inicisesion: false
     };
   },
   mounted() {
     const user = JSON.parse(localStorage.getItem('user'));
-    this.inicisesion = user.inicisesion || false;
-    this.nombre = user.nombre || '';
-    this.email = user.email || '';
-    this.fecha = user.fecha || '';
-    this.ubicacion = user.ubicacion || '';
-    this.biografia = user.biografia || '';
-    this.premium = user.premium || false;
+    if(user){
+      this.user = user;
+    }
   },
   methods:{
     irIndex(){
-
       const user = {
-        nombre: this.nombre,
-        email: this.email,
-        fecha: this.fecha,
-        ubicacion: this.ubicacion,
-        biografia: this.biografia,
-        premium: this.premium,
-        inicisesion: this.inicisesion,
+        username: this.user.username,
+        inicisesion: this.user.inicisesion,
+        password: this.user.password,
+        email: this.user.email,
+        date: this.user.date,
+        location: this.user.location,
+        biography: this.user.biography,
+        premium: this.user.premium,
+
       };
-
       localStorage.setItem('user', JSON.stringify(user));
-
       router.push('/');
     },
     confirmarEnvio(){
@@ -122,11 +118,11 @@ export default {
       const user = JSON.parse(localStorage.getItem('user'));
       user.premium = true;
       localStorage.setItem('user', JSON.stringify(user));
-      this.premium = true;
+      this.user.premium = true;
       this.showModal = false;
     },
     resetPremium() {
-      this.premium = false;
+      this.user.premium = false;
     },
 
     mostrarModalCancelarSuscripcion() {
@@ -137,10 +133,9 @@ export default {
       const user = JSON.parse(localStorage.getItem('user'));
       user.premium = false;
       localStorage.setItem('user', JSON.stringify(user));
-      this.premium = false;
+      this.user.premium = false;
       this.$bvModal.hide('modal-cancelar');
     }
-
   }
 }
 </script>

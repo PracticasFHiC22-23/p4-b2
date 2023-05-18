@@ -21,25 +21,25 @@
       <div class="profile-bar">
         <div class="profile-container">
           <img :src="perfil">
-          <div v-if="inicisesion" class="dropdown-menu-perfil">
+          <div v-if="user.premium" class="dropdown-menu-perfil">
             <a v-for="perfil in perfilnav" @click="redireccionar(perfil.url)">{{ perfil.nombre }}</a>
             <a @click="mostrarModalCerrarSesio">Cerrar Sesion</a>
             <b-modal id="modal-cerrar" title="Cerrar Sesion" ok-title="Cerrar Sesion" cancel-title="Cancelar" @ok="cerrarSesion">
               <p>¿Estas seguro de que deseas cerrar sesion?</p>
             </b-modal>
           </div>
-          <div v-if="!inicisesion" class="dropdown-menu-perfil">
+          <div v-if="!user.inicisesion" class="dropdown-menu-perfil">
             <a v-for="perfil in perfilnou" @click="mostrarModalInicioSesion">{{ perfil.nombre }}</a>
           </div>
           <b-modal id="modal-sesio" title="Inicio Sesion" ok-title="Iniciar Sesion" cancel-title="Registrar" @ok="inicioSesion" @cancel="registrarUsuario">
             <form>
               <div class="form-group">
                 <label for="username">Usuario</label>
-                <input type="text" class="form-control" id="username" v-model="nombre">
+                <input type="text" class="form-control" id="username" v-model="user.username">
               </div>
               <div class="form-group">
                 <label for="password">Contraseña</label>
-                <input type="password" class="form-control" id="password" v-model="password">
+                <input type="password" class="form-control" id="password" v-model="user.password">
               </div>
             </form>
           </b-modal>
@@ -94,9 +94,17 @@ export default {
     return {
       carrito: carrito,
       perfil: perfil,
-      user: 'test',
+      user: {
+        username: '',
+        inicisesion: false,
+        password: '',
+        email: '',
+        date: '',
+        location: '',
+        biography: '',
+        premium: false
+      },
       logo: logo,
-      inicisesion: false,
       // Modificar todos los ejemplos de productos etc...no meter nutricion.html y demas en una carpeta porque no te funcionara la parte de pillar los demas archivos
       // Hacer paginas de Nutricion, Ropa, Accesorios, Blog y rellenar con un par de objetos, lo que se puede hacer es:
       // Unos datos en un js, que tengan un tipo: Nutricion/Ropa/Accesorios/Blog, y ahi solo pillar de esos tipos y q se impriman dichos objetos
@@ -128,29 +136,18 @@ export default {
       resultados : [],
       mostrarDropdown: false,
       dropdownOpen: false,
-      nombre: '',
-      password: '',
-      contra: '',
-      email: '',
-      fecha: '',
-      ubicacion: '',
-      biografia: '',
-      premium: true,
     }
   },
   mounted () {
     const user = JSON.parse(localStorage.getItem('user'));
-    this.inicisesion = user.inicisesion || false;
-    this.nombre = user.nombre || '';
-    this.email = user.email || '';
-    this.fecha = user.fecha || '';
-    this.ubicacion = user.ubicacion || '';
-    this.biografia = user.biografia || '';
-    this.premium = user.premium || false;
+    if(user){
+      this.user = user;
+      this.$store.commit('setUser', this.user);
+    }
   },
   methods: {
     isPremium(obj) {
-      if (!this.premium) {
+      if (!this.user.premium) {
         // Mostrar un mensaje para animar al usuario a hacerse premium
         alert('Hazte premium para acceder a esta funcionalidad');
       }else{
@@ -193,33 +190,29 @@ export default {
       this.$bvModal.hide('modal-sesio');
     },
     cerrarSesion() {
-      const user = JSON.parse(localStorage.getItem('user'));
-      user.inicisesion = false;
+      localStorage.removeItem('user');
       this.inicisesion = false;
-      localStorage.setItem('user', JSON.stringify(user));
       this.$store.commit('setUser', {});
+      this.$store.commit('eliminarProductos');
     },
     inicioSesion() {
       const storedUser = localStorage.getItem('user');
       if (storedUser) {
         const user = JSON.parse(storedUser);
         user.inicisesion = true;
-        this.inicisesion = true;
         localStorage.setItem('user', JSON.stringify(user));
         this.$store.commit('setUser', user);
       } else {
         const newUser = {
-          nombre: this.nombre,
-          password: this.password,
-          email: '',
-          fecha: '',
-          ubicacion: '',
-          biografia: '',
+          username: this.user.username,
           inicisesion: true,
+          password: this.user.password,
+          email: '',
+          date: '',
+          location: '',
+          biography: '',
           premium: false,
-
         };
-        this.inicisesion = true;
         localStorage.setItem('user', JSON.stringify(newUser));
         this.$store.commit('setUser', newUser);
       }
@@ -227,8 +220,8 @@ export default {
     },
     registrarUsuario() {
       const newUser = {
-        nombre: this.nombre,
-        password: this.password,
+        nombre: this.user.nombre,
+        password: this.user.password,
         biography: '',
         email: '',
         fecha: '',
@@ -246,7 +239,7 @@ export default {
       router.push('/producte/'+ name);
       window.location.reload();
     }
-  }
+  },
 }
 </script>
 

@@ -16,7 +16,7 @@
           <tr v-for="(producto) in productos" :key="producto" @mouseover="producto.mostrarEliminar=true" @mouseleave="producto.mostrarEliminar=false">
             <td>
               <div class="d-flex align-items-center">
-                <img :src="producto.imagen" style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
+                <img :src="getImatgeUrl(producto.url)" style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
                 <span>{{ producto.nombre }}</span>
               </div>
             </td>
@@ -52,7 +52,6 @@
     <b-modal v-model="modalVisible" title="Confirmar Eliminación" @ok="eliminarFilaConfirmada">
       ¿Está seguro de que desea eliminar esta fila?
     </b-modal>
-
   </div>
 </template>
 
@@ -63,36 +62,27 @@ import creatinaCreapure from '../assets/creatine-offer.jpg'
 
 export default {
   name: "carrito",
+
   data() {
     return {
-      productos: [
-        {
-          nombre: 'Creatina Monohydrate Biotech',
-          cantidad: 2,
-          precio: 20.0,
-          imagen: creatinaMono,
-          mostrarEliminar: false
-        },
-        {
-          nombre: 'Creatina Creapure',
-          cantidad: 1,
-          precio: 35.0,
-          imagen: creatinaCreapure,
-          mostrarEliminar: false
-        }
-      ],
       total: 0,
       modalVisible: false,
       alertVisible: false
     };
   },
   computed: {
+    productos(){
+      return this.$store.state.productos;
+    },
     formattedTotal() {
       const total = this.productos.reduce((acc, producto) => acc + producto.cantidad * producto.precio, 0);
       return total < 0 ? '0.00 €' : `${total.toFixed(2)} €`;
     }
   },
   methods: {
+    getImatgeUrl(url) {
+      return require(`../assets/${url}`);
+    },
     eliminarFila(producto) {
       this.modalVisible = true;
       this.productoEliminar = producto;
@@ -141,9 +131,6 @@ export default {
       producto.mostrarEliminar = mostrar;
     }
   },
-  mounted() {
-
-  }
 }
 </script>
 
