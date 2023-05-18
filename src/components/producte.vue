@@ -23,7 +23,7 @@
             <option value="Chocolate">Chocolate</option>
             <option value="Fresa">Fresa</option>
           </select>
-          <b-modal id="modal-1" v-if="showModal" title="Confirmar compra" ok-title="Confirmar" cancel-title="Cancelar" @ok="comprarProducto">
+          <b-modal id="modal-1" v-if="showModal" title="Confirmar compra" ok-title="Confirmar" cancel-title="Cancelar" @ok="comprarProducto(productoEncontrado.name)">
             ¿Estás seguro de que deseas realizar la compra de {{productoEncontrado.name}} ?
           </b-modal>
           <div v-if="compraRealizada" class="alert alert-success" role="alert">
@@ -31,8 +31,9 @@
           </div>
         </div>
       </div>
-      <review />
-
+      <div id="reviu">
+        <review />
+      </div>
     </div>
   </div>
 </template>
@@ -49,6 +50,12 @@ export default {
     return {
       showModal: false,
       compraRealizada : false,
+      listaProd: [
+        {nombre: 'Whey Gold Standard', url: 'whey-ofert.jpg', cantidad: 1, precio: 15.99, mostrarEliminar: false},
+        {nombre: 'Creatina MonoHydrate BioTech', url: 'creatina.jpg', cantidad: 1, precio: 39.99, mostrarEliminar: false},
+        {nombre: 'Creatine MonoHydrate Drasanvi', url: 'creatina2.jpg', cantidad: 1, precio: 49.99, mostrarEliminar: false},
+        {nombre: 'Trembolona', url: 'trembolona.jpg', cantidad: 1, precio: 15.99, mostrarEliminar: false}
+      ],
       productes: [
         {name: 'Whey Gold Standard', description: 'Whey Gold Standard es un producto de suplemento nutricional de alta calidad diseñado especialmente para los entusiastas del fitness y los atletas que buscan maximizar su rendimiento y alcanzar sus objetivos de construcción muscular. Este producto se ha convertido en un referente en la industria de los suplementos debido a su fórmula avanzada y a sus beneficios excepcionales.\n' +
             '\n' +
@@ -108,23 +115,12 @@ export default {
       return require(`../assets/${url}`);
     },
     comprarProducto(nom){
-      const producto = this.productos.find(p => {
-        p.name === nom;
-      })
-      const newProducto = {
-        nombre: producto.nombre,
-        cantidad: 1,
-        precio: producto.precio,
-        urlimagen: producto.urlproduct,
-
-      };
-
-      localStorage.setItem('producto', JSON.stringify(newProducto));
-      this.$store.commit('addProducto', newProducto);
+      const product = this.listaProd.find(p => p.nombre === nom);
+      this.$store.commit('agregarProducto', product)
       this.compraRealizada = true;
       this.showModal = false;
       setTimeout(() => {
-        this.compraRealizada =false;
+        this.compraRealizada = false;
       }, 5000);
     }
   }
@@ -143,6 +139,11 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+  }
+
+  #reviu{
+    margin-top: 20px;
+    margin-left: 8em;
   }
 
   #box {
