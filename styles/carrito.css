@@ -1,3 +1,12 @@
+.contenedor-tablas {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .tabla-carrito {
     border-collapse: collapse;
     width: 100%;
@@ -11,16 +20,16 @@
 .tabla-carrito td {
     text-align: left;
     padding: 12px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid white;
 }
 
 .tabla-carrito th {
-    background-color: #f2f2f2;
+    background-color: white;
     font-weight: bold;
 }
 
 .tabla-carrito tr:hover {
-    background-color: #f5f5f5;
+    background-color: white;
 }
 
 .table-total {
@@ -28,7 +37,6 @@
     width: 100%;
     max-width: 800px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    padding: 10px;
     margin: 0 auto 50px;
 }
 
@@ -36,11 +44,11 @@
 .tabla-carrito td {
     text-align: left;
     padding: 12px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid white;
 }
 
 .table-total th {
-    background-color: #f2f2f2;
+    background-color: white;
     font-weight: bold;
 }
 
@@ -73,7 +81,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: black;
     z-index: 9999;
 }
 
@@ -82,7 +90,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
+    background-color: white;
     padding: 20px;
     text-align: center;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
@@ -96,19 +104,19 @@
     margin: 0 10px;
     padding: 10px 20px;
     background-color: #ff4444;
-    color: #fff;
+    color: white;
     border: none;
     border-radius: 3px;
     cursor: pointer;
 }
 
 #confirm-box button:hover {
-    background-color: #cc0000;
+    background-color: red;
 }
 
 .btn-finalizar-compra {
-    background-color: #007bff;
-    color: #fff;
+    background-color: dodgerblue;
+    color: white;
     border: none;
     border-radius: 4px;
     padding: 10px 20px;
@@ -118,7 +126,7 @@
 }
 
 .btn-finalizar-compra:hover {
-    background-color: #0069d9;
+    background-color: dodgerblue;
 }
 
 @media (max-width: 850px) {
