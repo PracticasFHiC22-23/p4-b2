@@ -16,6 +16,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import BootstrapVue, {BModal, IconsPlugin} from "bootstrap-vue";
 import objetivos from "./components/objetivos";
+import Router from "vue-router";
 
 Vue.config.productionTip = false
 
