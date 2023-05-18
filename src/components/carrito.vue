@@ -13,7 +13,7 @@
           </tr>
           </thead>
           <tbody id="table-body">
-          <tr v-for="(producto) in productos" :key="producto" @mouseover="producto.mostrarEliminar=true" @mouseleave="producto.mostrarEliminar=false">
+          <tr v-for="(producto, index) in productos" :key="producto" @mouseover="producto.mostrarEliminar=true" @mouseleave="producto.mostrarEliminar=false">
             <td>
               <div class="d-flex align-items-center">
                 <img :src="getImatgeUrl(producto.url)" style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
@@ -25,7 +25,7 @@
             </td>
             <td>{{ producto.precio }} €</td>
             <td class="eliminar-column">
-              <button class="btn-eliminar" v-show="producto.mostrarEliminar" @click="eliminarFila(producto)">Eliminar</button>
+              <button class="btn-eliminar" v-show="producto.mostrarEliminar" @click="eliminarFila(producto, index)">Eliminar</button>
             </td>
           </tr>
           </tbody>
@@ -48,7 +48,6 @@
         </div>
       </div>
     </div>
-
     <b-modal v-model="modalVisible" title="Confirmar Eliminación" @ok="eliminarFilaConfirmada">
       ¿Está seguro de que desea eliminar esta fila?
     </b-modal>
@@ -83,7 +82,7 @@ export default {
     getImatgeUrl(url) {
       return require(`../assets/${url}`);
     },
-    eliminarFila(producto) {
+    eliminarFila(producto, index) {
       this.modalVisible = true;
       this.productoEliminar = producto;
     },

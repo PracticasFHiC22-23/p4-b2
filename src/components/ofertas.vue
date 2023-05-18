@@ -80,7 +80,7 @@ export default {
     agregarAlCarrito(producto) {
       this.compraRealizada = true;
       setTimeout(() => {
-        this.compraRealizada =false;
+        this.compraRealizada = false;
       }, 3000);
       const product = this.productos.find(p => p.nombre === producto);
       this.$store.commit('agregarProducto', product)

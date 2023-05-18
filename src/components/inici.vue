@@ -2,7 +2,7 @@
   <div>
     <div class="navbar-first">
       <div class="logo">
-        <a href="/">
+        <a @click="irInicio">
           <img :src="logo" alt="Logo">
         </a>
       </div>
@@ -160,6 +160,9 @@ export default {
     irCarrito(){
       router.push('/carrito');
     },
+    irInicio(){
+      router.push('/')
+    },
     redireccionar(url){
       router.push(url);
     },
@@ -202,6 +205,7 @@ export default {
         user.inicisesion = true;
         localStorage.setItem('user', JSON.stringify(user));
         this.$store.commit('setUser', user);
+
       } else {
         const newUser = {
           username: this.user.username,
@@ -212,6 +216,7 @@ export default {
           location: '',
           biography: '',
           premium: false,
+
         };
         localStorage.setItem('user', JSON.stringify(newUser));
         this.$store.commit('setUser', newUser);
