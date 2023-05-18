@@ -174,5 +174,152 @@ export default {
 </script>
 
 <style scoped>
-  @import '../../styles/calculadora.css';
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+*{
+  font-family: 'Open Sans', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.search-container {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+#search-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px 0 0 5px;
+  font-size: 16px;
+}
+
+#search-button {
+  padding: 10px;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  background-color: #FF6B6B;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.search-results {
+  margin-bottom: 20px;
+}
+
+#food-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#food-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid white;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+#food-list input {
+  width: 15%;
+}
+
+.food-quantity {
+  width: 50px;
+  height: 30px;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.add-food {
+  background-color: limegreen;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+  border-radius: 5px;
+
+}
+
+th {
+  background-color: #FF6B6B;
+  color: white;
+
+}
+
+td:last-child {
+  text-align: center;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.card-header {
+  margin-bottom: 8px;
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* Ajusta la imagen al contenedor manteniendo la relación de aspecto */
+}
+.green-button {
+  background-color: green;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: flex-end; /* Alinea el botón a la derecha del contenedor */
+}
+
+.green-button:hover {
+  background-color: darkgreen;
+}
+
 </style>
