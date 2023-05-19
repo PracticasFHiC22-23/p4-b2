@@ -5,5 +5,5 @@ npm install --force
 npm run dev
 3) Acceda al localhost
 4) Usuario predeterminado:
-- Usuario: testing
-- Contraseña: testing123
+- Usuario: Test
+- Contraseña: 1234
