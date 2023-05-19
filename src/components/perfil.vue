@@ -2,7 +2,76 @@
   <div>
     <div><inici :main-page="false" /></div>
     <div class="container">
-      <div class="profile-edit">
+      <div id="seccion-pedidos">
+        <button @click="(historial = true) && (mensual = false)">Historial de Pedidos</button>
+        <button @click="(mensual = true) && (historial = false)">Compra Mensual</button>
+        <button @click="(mensual = false) && (historial = false)">Datos Perfil</button>
+      </div>
+      <div v-if="historial">
+        <h1>Historial de Pedidos</h1>
+        <p v-if="listMensual.length === 0">No has realizado ningun pedido</p>
+        <div v-for="pedidos in this.listHist">
+          <table class="tabla-carrito">
+            <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio/Unidad</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+            <tr v-for="(producto, index) in pedidos" :key="producto">
+              <td>
+                <div class="d-flex align-items-center">
+                  <img :src="getImatgeUrl(producto.url)" style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
+                  <span>{{ producto.nombre }}</span>
+                </div>
+              </td>
+              <td>
+                <input type="number" min="0" v-model.number="producto.cantidad" :data-precio="producto.precio" @input="calcularTotal">
+              </td>
+              <td>{{ producto.precio }} €</td>
+              <td class="eliminar-column">
+                <button class="btn-eliminar" v-show="producto.mostrarEliminar" @click="eliminarFila(producto, index)">Eliminar</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div v-if="mensual">
+        <div>
+          <h1>Compra Mensual Configurada</h1>
+          <table class="tabla-carrito">
+            <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio/Unidad</th>
+              <th>Eliminar</th>
+            </tr>
+            </thead>
+            <tbody id="table-body1">
+            <tr v-for="(producto, index) in listMensual" :key="producto" @mouseover="producto.mostrarEliminar=true" @mouseleave="producto.mostrarEliminar=false">
+              <td>
+                <div class="d-flex align-items-center">
+                  <img :src="getImatgeUrl(producto.url)" style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
+                  <span>{{ producto.nombre }}</span>
+                </div>
+              </td>
+              <td>
+                <input type="number" min="0" v-model.number="producto.cantidad" :data-precio="producto.precio" @input="calcularTotal">
+              </td>
+              <td>{{ producto.precio }} €</td>
+              <td class="eliminar-column">
+                <button class="btn-eliminar" v-show="producto.mostrarEliminar" @click="eliminarFila(producto, index)">Eliminar</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="profile-edit" v-if="!historial && !mensual">
         <h1>Editar Perfil</h1>
         <form id="formulario-edicion">
           <div class="form-group">
@@ -11,19 +80,19 @@
           </div>
           <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required v-model="email">
+            <input type="email" id="email" name="email" required v-model="user.email">
           </div>
           <div class="form-group">
             <label for="fecha">Fecha de Nacimiento:</label>
-            <input type="date" id="fecha" name="fecha" required v-model="fecha">
+            <input type="date" id="fecha" name="fecha" required v-model="user.date">
           </div>
           <div class="form-group">
             <label for="ubicacion">Ubicación:</label>
-            <input type="text" id="ubicacion" name="ubicacion" v-model="ubicacion">
+            <input type="text" id="ubicacion" name="ubicacion" v-model="user.location">
           </div>
           <div class="form-group">
             <label>Datos de envio:</label>
-            <textarea id="biografia" name="biografia" v-model="biografia"></textarea>
+            <textarea id="biografia" name="biografia" v-model="this.user.biography"></textarea>
           </div>
           <div>
             <button class="btn btn-primary" @click="mostrarModalGuardarPerfil">Guardar Cambios</button>
@@ -31,9 +100,9 @@
               <p>¿Estás seguro de que deseas guardar tu perfil?</p>
             </b-modal>
             <template v-if="this.user.premium">
-              <div class="premium-label" v-if="this.user.premium">
+              <div class="premium-label" v-if="user.premium">
                 <label class="checkbox-label">
-                  <input type="checkbox" v-model="this.user.premium" disabled>
+                  <input type="checkbox" v-model="user.premium" disabled>
                   <span class="checkbox-text">Usuario Premium</span>
                 </label>
               </div>
@@ -82,6 +151,10 @@ export default {
         premium: false
       },
       showModal: false,
+      historial: false,
+      mensual: false,
+      listMensual: [],
+      listHist: []
     };
   },
   mounted() {
@@ -89,9 +162,33 @@ export default {
     if(user){
       this.user = user;
       this.premium = user.premium;
+
     }
+    this.listMensual = this.$store.state.mensualist;
+    this.listHist = this.$store.state.pedidosAnteriores;
   },
   methods:{
+    getImatgeUrl(url) {
+      return require(`../assets/${url}`);
+    },
+    eliminarFila(producto, index) {
+      this.modalVisible = true;
+      this.productoEliminar = producto;
+    },
+    eliminarFilaConfirmada() {
+      const index = this.$store.state.productos.indexOf(this.productoEliminar);
+      this.$store.state.productos.splice(index, 1);
+      this.calcularTotal();
+      this.modalVisible = false;
+    },
+    calcularTotal() {
+      this.total = 0;
+      this.productos.forEach(producto => {
+        const cantidad = parseInt(producto.cantidad);
+        const precio = parseFloat(producto.precio);
+        this.total += cantidad * precio;
+      });
+    },
     irIndex(){
       const user = {
         username: this.user.username,
@@ -157,7 +254,7 @@ export default {
 .profile-edit {
   width: 400px;
   padding: 20px;
-  background-color: #c2c0c0;
+  background-color: lightgray;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-top: 50px;

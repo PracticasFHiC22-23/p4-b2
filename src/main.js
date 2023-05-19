@@ -17,6 +17,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import BootstrapVue, {BModal, IconsPlugin} from "bootstrap-vue";
 import objetivos from "./components/objetivos";
 import Router from "vue-router";
+import {stat} from "copy-webpack-plugin/dist/utils/promisify";
 
 Vue.config.productionTip = false
 
@@ -47,7 +48,9 @@ Vue.prototype.$store = new Vuex.Store({
       biography: '',
       premium: false
     },
-    productos: []
+    productos: [],
+    mensualist: [],
+    pedidosAnteriores: []
   },
   mutations: {
     setUser(state, user) {
@@ -65,7 +68,13 @@ Vue.prototype.$store = new Vuex.Store({
       }
     },
     eliminarProductos(state){
-      state.productos = []
+      state.productos = [];
+    },
+    setMensual(state, productes){
+      state.mensualist = productes;
+    },
+    setNewPedido(state, pedido){
+      state.pedidosAnteriores.push(pedido);
     }
   },
 });

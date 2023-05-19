@@ -45,6 +45,7 @@
         </div>
         <div style="display: flex; justify-content: flex-end; margin-top: 20px">
           <button class="btn-finalizar-compra" id="btn-finalizar-compra" @click="confirmarFinalizarCompra">Finalizar Compra</button>
+          <button class="btn-finalizar-compra" @click="mensual">Compra Mensual</button>
         </div>
       </div>
     </div>
@@ -66,19 +67,30 @@ export default {
     return {
       total: 0,
       modalVisible: false,
-      alertVisible: false
+      alertVisible: false,
+      productos: []
     };
   },
+  mounted() {
+    this.productos = this.$store.state.productos;
+  },
   computed: {
-    productos(){
-      return this.$store.state.productos;
-    },
     formattedTotal() {
       const total = this.productos.reduce((acc, producto) => acc + producto.cantidad * producto.precio, 0);
       return total < 0 ? '0.00 €' : `${total.toFixed(2)} €`;
     }
   },
   methods: {
+    mensual(){
+      this.$bvModal.msgBoxConfirm('¿Estás seguro añadir esta compra a Pedido Mensual?', {
+        title: 'Confirmar',
+        okVariant: 'primary',
+        okTitle: 'Aceptar',
+        cancelTitle: 'Cancelar',
+        centered: true
+      })
+      this.$store.commit('setMensual', this.productos);
+    },
     getImatgeUrl(url) {
       return require(`../assets/${url}`);
     },
@@ -120,6 +132,7 @@ export default {
     },
     finalizarCompra() {
       this.alertVisible = true;
+      this.$store.commit('setNewPedido', this.productos)
       this.$store.state.productos = [];
       this.calcularTotal();
       setTimeout(() => {
