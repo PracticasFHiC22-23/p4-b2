@@ -121,6 +121,7 @@ export default {
       localStorage.setItem('user', JSON.stringify(user));
       this.user.premium = true;
       this.showModal = false;
+      window.location.reload();
     },
     resetPremium() {
       this.user.premium = false;
