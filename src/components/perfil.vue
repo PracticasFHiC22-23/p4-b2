@@ -88,6 +88,7 @@ export default {
     const user = JSON.parse(localStorage.getItem('user'));
     if(user){
       this.user = user;
+      this.premium = user.premium;
     }
   },
   methods:{

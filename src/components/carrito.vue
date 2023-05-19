@@ -87,8 +87,8 @@ export default {
       this.productoEliminar = producto;
     },
     eliminarFilaConfirmada() {
-      const index = this.productos.indexOf(this.productoEliminar);
-      this.productos.splice(index, 1);
+      const index = this.$store.state.productos.indexOf(this.productoEliminar);
+      this.$store.state.productos.splice(index, 1);
       this.calcularTotal();
       this.modalVisible = false;
     },
@@ -120,7 +120,7 @@ export default {
     },
     finalizarCompra() {
       this.alertVisible = true;
-      this.productos = [];
+      this.$store.state.productos = [];
       this.calcularTotal();
       setTimeout(() => {
         this.alertVisible =false;

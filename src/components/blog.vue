@@ -1,26 +1,31 @@
 <template>
-  <div class="recipe-container">
-    <div v-if="recetaActual">
-      <div class="receta">
-        <h2>{{ recetaActual.titulo }}</h2>
-        <img :src="getImatgeUrl(recetaActual.url)" :alt="recetaActual.titulo" class="receta-image" />
-        <h3>Ingredientes:</h3>
-        <ul>
-          <li v-for="(ingrediente, index) in recetaActual.ingredientes" :key="index">
-            {{ Object.keys(ingrediente)[0] }}: {{ Object.values(ingrediente)[0] }}
-          </li>
-        </ul>
-        <h3>Instrucciones:</h3>
-        <ol>
-          <li v-for="(instruccion, index) in recetaActual.intrucciones" :key="index">
-            {{ Object.values(instruccion)[0] }}
-          </li>
-        </ol>
-        <h2>Calorías: {{ recetaActual.calorias }}</h2>
+  <div>
+
+
+    <div><inici :main-page="false"/></div>
+    <div class="recipe-container">
+      <div v-if="recetaActual">
+        <div class="receta">
+          <h2>{{ recetaActual.titulo }}</h2>
+          <img :src="getImatgeUrl(recetaActual.url)" :alt="recetaActual.titulo" class="receta-image" />
+          <h3>Ingredientes:</h3>
+          <ul>
+            <li v-for="(ingrediente, index) in recetaActual.ingredientes" :key="index">
+              {{ Object.keys(ingrediente)[0] }}: {{ Object.values(ingrediente)[0] }}
+            </li>
+          </ul>
+          <h3>Instrucciones:</h3>
+          <ol>
+            <li v-for="(instruccion, index) in recetaActual.intrucciones" :key="index">
+              {{ Object.values(instruccion)[0] }}
+            </li>
+          </ol>
+          <h2>Calorías: {{ recetaActual.calorias }}</h2>
+        </div>
       </div>
-    </div>
-    <div v-else>
-      <p>No se encontró la receta.</p>
+      <div v-else>
+        <p>No se encontró la receta.</p>
+      </div>
     </div>
   </div>
 </template>
@@ -88,6 +93,7 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
 * {
   font-family: 'Open Sans', sans-serif;
   box-sizing: border-box;
@@ -105,4 +111,5 @@ export default {
     padding: 10px;
   }
 }
+
 </style>

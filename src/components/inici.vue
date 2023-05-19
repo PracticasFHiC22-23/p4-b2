@@ -21,7 +21,7 @@
       <div class="profile-bar">
         <div class="profile-container">
           <img :src="perfil">
-          <div v-if="user.premium" class="dropdown-menu-perfil">
+          <div v-if="user.inicisesion" class="dropdown-menu-perfil">
             <a v-for="perfil in perfilnav" @click="redireccionar(perfil.url)">{{ perfil.nombre }}</a>
             <a @click="mostrarModalCerrarSesio">Cerrar Sesion</a>
             <b-modal id="modal-cerrar" title="Cerrar Sesion" ok-title="Cerrar Sesion" cancel-title="Cancelar" @ok="cerrarSesion">
@@ -197,6 +197,8 @@ export default {
       this.inicisesion = false;
       this.$store.commit('setUser', {});
       this.$store.commit('eliminarProductos');
+      this.$router.push('/');
+      window.location.reload();
     },
     inicioSesion() {
       const storedUser = localStorage.getItem('user');
@@ -216,12 +218,12 @@ export default {
           location: '',
           biography: '',
           premium: false,
-
         };
         localStorage.setItem('user', JSON.stringify(newUser));
         this.$store.commit('setUser', newUser);
       }
       this.$router.push('/perfil');
+      window.location.reload();
     },
     registrarUsuario() {
       const newUser = {
@@ -239,6 +241,7 @@ export default {
       localStorage.setItem('user', JSON.stringify(newUser));
       this.$store.commit('setUser', newUser);
       this.$router.push('/perfil');
+      window.location.reload();
     },
     irProducte(name){
       router.push('/producte/'+ name);
