@@ -109,11 +109,11 @@ export default {
       // Hacer paginas de Nutricion, Ropa, Accesorios, Blog y rellenar con un par de objetos, lo que se puede hacer es:
       // Unos datos en un js, que tengan un tipo: Nutricion/Ropa/Accesorios/Blog, y ahi solo pillar de esos tipos y q se impriman dichos objetos
       navegacion: [
-        { texto: 'Proteina', urlNav: './nutricion.html', productos: [{nombre: 'Whey Gold Standard'}, {nombre: 'Caseina y Proteina'}, {nombre: 'Isolate'}, {nombre: 'Creatina'}, {nombre: 'Creatine MonoHydrate Drasanvi'}, {nombre: 'Creatina MonoHydrate BioTech'}] },
-        { texto: 'Aminoacidos', urlNav: '#', productos: [{nombre: 'BCAA'}, {nombre: 'Glutamina'}, {nombre: 'Arginina'}] },
-        { texto: 'Pre-Workout', urlNav: '#', productos: [{nombre: 'Gominolas'}, {nombre: 'Mezcla'}] },
-        { texto: 'Post-Workout', urlNav: '#', productos: [{nombre: 'Gominolas'}, {nombre: 'Mezcla'}]},
-        { texto: 'Vitaminas', urlNav: '#', productos: [{nombre: 'Colageno'},{nombre: 'Perdida de Peso'}, {nombre: 'Trembolona'}]}
+        { texto: 'Proteina', urlNav: './nutricion.html', productos: [{nombre: 'Whey Gold Standard'}, {nombre: 'Caseina y Proteina IN-PROGRESS'}, {nombre: 'Isolate IN-PROGRESS'}, {nombre: 'Creatina IN-PROGRESS'}, {nombre: 'Creatine MonoHydrate Drasanvi'}, {nombre: 'Creatina MonoHydrate BioTech'}] },
+        { texto: 'Aminoacidos', urlNav: '#', productos: [{nombre: 'BCAA IN-PROGRESS'}, {nombre: 'Glutamina IN-PROGRESS'}, {nombre: 'ArgininaIN-PROGRESS'}] },
+        { texto: 'Pre-Workout', urlNav: '#', productos: [{nombre: 'Gominolas IN-PROGRESS'}, {nombre: 'Mezcla IN-PROGRESS'}] },
+        { texto: 'Post-Workout', urlNav: '#', productos: [{nombre: 'Gominolas IN-PROGRESS'}, {nombre: 'Mezcla IN-PROGRESS'}]},
+        { texto: 'Vitaminas', urlNav: '#', productos: [{nombre: 'Colageno IN-PROGRESS'},{nombre: 'Perdida de Peso IN-PROGRESS'}, {nombre: 'Trembolona'}]}
       ],
       perfilnav : [
         {nombre: 'Editar Perfil', url: '/perfil'},

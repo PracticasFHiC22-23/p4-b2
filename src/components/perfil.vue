@@ -2,132 +2,135 @@
   <div>
     <div><inici :main-page="false" /></div>
     <div class="container">
-      <div id="seccion-pedidos">
-        <button @click="(historial = true) && (mensual = false)">Historial de Pedidos</button>
-        <button @click="(mensual = true) && (historial = false)">Compra Mensual</button>
-        <button @click="(mensual = false) && (historial = false)">Datos Perfil</button>
+      <div class="botones-izquierda">
+        <button @click="(historial = true) && (mensual = false)" class="navbar-btn boton-izquierda">Historial de Pedidos</button>
+        <button @click="(mensual = true) && (historial = false)" class="navbar-btn boton-izquierda">Compra Mensual</button>
+        <button @click="(historial = false) && (mensual = false)" class="navbar-btn boton-izquierda">Datos de Perfil</button>
       </div>
-      <div v-if="historial">
-        <h1>Historial de Pedidos</h1>
-        <p v-if="listMensual.length === 0">No has realizado ningun pedido</p>
-        <div v-for="pedidos in this.listHist">
-          <table class="tabla-carrito">
-            <thead>
-            <tr>
-              <th>Producto</th>
-              <th>Cantidad</th>
-              <th>Precio/Unidad</th>
-            </tr>
-            </thead>
-            <tbody id="table-body">
-            <tr v-for="(producto, index) in pedidos" :key="producto">
-              <td>
-                <div class="d-flex align-items-center">
-                  <img :src="getImatgeUrl(producto.url)" style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
-                  <span>{{ producto.nombre }}</span>
-                </div>
-              </td>
-              <td>
-                <input type="number" min="0" v-model.number="producto.cantidad" :data-precio="producto.precio" @input="calcularTotal">
-              </td>
-              <td>{{ producto.precio }} €</td>
-              <td class="eliminar-column">
-                <button class="btn-eliminar" v-show="producto.mostrarEliminar" @click="eliminarFila(producto, index)">Eliminar</button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+      <div class="contenedor-tablas">
+        <div v-if="historial">
+          <h1>Historial de Pedidos</h1>
+          <p v-if="listMensual.length === 0">No has realizado ningún pedido</p>
+          <div v-for="pedidos in listHist">
+            <table class="tabla-carrito">
+              <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio/Unidad</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(producto, index) in pedidos" :key="producto">
+                <td>
+                  <div class="d-flex align-items-center">
+                    <img :src="getImatgeUrl(producto.url)" class="tabla-imagen">
+                    <span>{{ producto.nombre }}</span>
+                  </div>
+                </td>
+                <td>
+                  <input type="number" min="0" v-model.number="producto.cantidad" :data-precio="producto.precio" @input="calcularTotal">
+                </td>
+                <td>{{ producto.precio }} €</td>
+                <td class="eliminar-column">
+                  <button class="btn-eliminar" v-show="producto.mostrarEliminar" @click="eliminarFila(producto, index)">Eliminar</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-      <div v-if="mensual">
-        <div>
-          <h1>Compra Mensual Configurada</h1>
-          <table class="tabla-carrito">
-            <thead>
-            <tr>
-              <th>Producto</th>
-              <th>Cantidad</th>
-              <th>Precio/Unidad</th>
-              <th>Eliminar</th>
-            </tr>
-            </thead>
-            <tbody id="table-body1">
-            <tr v-for="(producto, index) in listMensual" :key="producto" @mouseover="producto.mostrarEliminar=true" @mouseleave="producto.mostrarEliminar=false">
-              <td>
-                <div class="d-flex align-items-center">
-                  <img :src="getImatgeUrl(producto.url)" style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
-                  <span>{{ producto.nombre }}</span>
-                </div>
-              </td>
-              <td>
-                <input type="number" min="0" v-model.number="producto.cantidad" :data-precio="producto.precio" @input="calcularTotal">
-              </td>
-              <td>{{ producto.precio }} €</td>
-              <td class="eliminar-column">
-                <button class="btn-eliminar" v-show="producto.mostrarEliminar" @click="eliminarFila(producto, index)">Eliminar</button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="profile-edit" v-if="!historial && !mensual">
-        <h1>Editar Perfil</h1>
-        <form id="formulario-edicion">
-          <div class="form-group">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required v-model="user.username">
-          </div>
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required v-model="user.email">
-          </div>
-          <div class="form-group">
-            <label for="fecha">Fecha de Nacimiento:</label>
-            <input type="date" id="fecha" name="fecha" required v-model="user.date">
-          </div>
-          <div class="form-group">
-            <label for="ubicacion">Ubicación:</label>
-            <input type="text" id="ubicacion" name="ubicacion" v-model="user.location">
-          </div>
-          <div class="form-group">
-            <label>Datos de envio:</label>
-            <textarea id="biografia" name="biografia" v-model="this.user.biography"></textarea>
-          </div>
+        <div v-if="mensual">
           <div>
-            <button class="btn btn-primary" @click="mostrarModalGuardarPerfil">Guardar Cambios</button>
-            <b-modal id="modal-guardar" title="Guardar Perfil" ok-title="Confirmar" cancel-title="Cancelar" @ok="confirmarEnvio">
-              <p>¿Estás seguro de que deseas guardar tu perfil?</p>
-            </b-modal>
-            <template v-if="this.user.premium">
-              <div class="premium-label" v-if="user.premium">
-                <label class="checkbox-label">
-                  <input type="checkbox" v-model="user.premium" disabled>
-                  <span class="checkbox-text">Usuario Premium</span>
-                </label>
-              </div>
-              <button class="btn btn-danger" @click="mostrarModalCancelarSuscripcion">Cancelar Suscripción</button>
-              <b-modal id="modal-cancelar" title="Cancelar Suscripción" ok-title="Confirmar" cancel-title="Cancelar" @ok="cancelarSuscripcion">
-                <p>¿Estás seguro de que deseas cancelar tu suscripción premium?</p>
-              </b-modal>
-            </template>
-            <template v-else>
-              <b-button v-if="!user.premium" v-b-modal.modal-1 type="button" class="btn btn-warning" @click="showModal = true">Hacerte premium</b-button>
-              <b-modal id="modal-1" v-if="showModal" title="Aceptar condiciones" ok-title="Aceptar" cancel-title="Cancelar" @ok="aceptarCondiciones" @cancel="showModal = false">
-                <p>Acepta las condiciones para hacerse premium:</p>
-                <ul>
-                  <li>Haber realizado anteriormente un mínimo de 3 pedidos</li>
-                  <li>Seguidor de la web en Instagram</li>
-                </ul>
-                <h6>Le recordamos que a partir de ahora se le realizará un pago mensual de 9.99€</h6>
-                <template #modal-header="{ close }">
-                  <div class="custom-close" @click="close">×</div>
-                  <div class="custom-close-space"></div>
-                </template>
-              </b-modal>
-            </template>
+            <h1>Compra Mensual Configurada</h1>
+            <table class="tabla-carrito">
+              <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio/Unidad</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(producto, index) in listMensual" :key="producto" @mouseover="producto.mostrarEliminar=true" @mouseleave="producto.mostrarEliminar=false">
+                <td>
+                  <div class="d-flex align-items-center">
+                    <img :src="getImatgeUrl(producto.url)" class="tabla-imagen">
+                    <span>{{ producto.nombre }}</span>
+                  </div>
+                </td>
+                <td>
+                  <input type="number" min="0" v-model.number="producto.cantidad" :data-precio="producto.precio" @input="calcularTotal">
+                </td>
+                <td>{{ producto.precio }} €</td>
+                <td class="eliminar-column">
+                  <button class="btn-eliminar" v-show="producto.mostrarEliminar" @click="eliminarFila(producto, index)">Eliminar</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
           </div>
-        </form>
+        </div>
+        <div class="profile-edit" v-if="!historial && !mensual">
+          <h1>Editar Perfil</h1>
+          <form id="formulario-edicion">
+            <div class="form-group">
+              <label for="nombre">Nombre:</label>
+              <input type="text" id="nombre" name="nombre" required v-model="user.username">
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" required v-model="user.email">
+            </div>
+            <div class="form-group">
+              <label for="fecha">Fecha de Nacimiento:</label>
+              <input type="date" id="fecha" name="fecha" required v-model="user.date">
+            </div>
+            <div class="form-group">
+              <label for="ubicacion">Ubicación:</label>
+              <input type="text" id="ubicacion" name="ubicacion" v-model="user.location">
+            </div>
+            <div class="form-group">
+              <label>Datos de envio:</label>
+              <textarea id="biografia" name="biografia" v-model="this.user.biography"></textarea>
+            </div>
+            <div>
+              <button class="btn btn-primary" @click="mostrarModalGuardarPerfil">Guardar Cambios</button>
+              <b-modal id="modal-guardar" title="Guardar Perfil" ok-title="Confirmar" cancel-title="Cancelar" @ok="confirmarEnvio">
+                <p>¿Estás seguro de que deseas guardar tu perfil?</p>
+              </b-modal>
+              <template v-if="this.user.premium">
+                <div class="premium-label" v-if="user.premium">
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="user.premium" disabled>
+                    <span class="checkbox-text">Usuario Premium</span>
+                  </label>
+                </div>
+                <button class="btn btn-danger" @click="mostrarModalCancelarSuscripcion">Cancelar Suscripción</button>
+                <b-modal id="modal-cancelar" title="Cancelar Suscripción" ok-title="Confirmar" cancel-title="Cancelar" @ok="cancelarSuscripcion">
+                  <p>¿Estás seguro de que deseas cancelar tu suscripción premium?</p>
+                </b-modal>
+              </template>
+              <template v-else>
+                <b-button v-if="!user.premium" v-b-modal.modal-1 type="button" class="btn btn-warning" @click="showModal = true">Hacerte premium</b-button>
+                <b-modal id="modal-1" v-if="showModal" title="Aceptar condiciones" ok-title="Aceptar" cancel-title="Cancelar" @ok="aceptarCondiciones" @cancel="showModal = false">
+                  <p>Acepta las condiciones para hacerse premium:</p>
+                  <ul>
+                    <li>Haber realizado anteriormente un mínimo de 3 pedidos</li>
+                    <li>Seguidor de la web en Instagram</li>
+                  </ul>
+                  <h6>Le recordamos que a partir de ahora se le realizará un pago mensual de 9.99€</h6>
+                  <template #modal-header="{ close }">
+                    <div class="custom-close" @click="close">×</div>
+                    <div class="custom-close-space"></div>
+                  </template>
+                </b-modal>
+              </template>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -342,4 +345,88 @@ textarea {
   margin-bottom: 10px;
 }
 
+.botones-izquierda {
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 9999;
+}
+
+.boton-izquierda {
+  width: 200px;
+}
+
+.navbar-btn {
+  background-color: #FF6B6B;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+  margin-bottom: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-btn:hover {
+  background-color: #FF4F4F;
+}
+
+.contenedor-tablas {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tabla-carrito {
+  width: 80%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.tabla-carrito th,
+.tabla-carrito td {
+  padding: 12px;
+  text-align: left;
+}
+
+.tabla-carrito th {
+  background-color: #F8F8F8;
+  font-weight: bold;
+}
+
+.tabla-carrito tbody tr:nth-child(even) {
+  background-color: #F2F2F2;
+}
+
+.tabla-imagen {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin-right: 10px;
+}
+
+.btn-eliminar {
+  background-color: #FF6B6B;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-eliminar:hover {
+  background-color: #FF8F8F;
+}
 </style>
