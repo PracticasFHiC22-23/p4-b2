@@ -3,9 +3,9 @@
     <div><inici :main-page="false" /></div>
     <div class="container">
       <div class="botones-izquierda">
-        <button @click="(historial = true) && (mensual = false)" class="navbar-btn boton-izquierda">Historial de Pedidos</button>
-        <button @click="(mensual = true) && (historial = false)" class="navbar-btn boton-izquierda">Compra Mensual</button>
-        <button @click="(historial = false) && (mensual = false)" class="navbar-btn boton-izquierda">Datos de Perfil</button>
+        <button @click="historial = true, mensual = false" class="navbar-btn boton-izquierda">Historial de Pedidos</button>
+        <button @click="mensual = true, historial = false" class="navbar-btn boton-izquierda">Compra Mensual</button>
+        <button @click="historial = false, mensual = false" class="navbar-btn boton-izquierda">Datos de Perfil</button>
       </div>
       <div class="contenedor-tablas">
         <div v-if="historial">
@@ -73,7 +73,7 @@
             </table>
           </div>
         </div>
-        <div class="profile-edit" v-if="!historial && !mensual">
+        <div class="profile-edit" v-if="(!historial) && (!mensual)">
           <h1>Editar Perfil</h1>
           <form id="formulario-edicion">
             <div class="form-group">
@@ -94,24 +94,30 @@
             </div>
             <div class="form-group">
               <label>Datos de envio:</label>
-              <textarea id="biografia" name="biografia" v-model="this.user.biography"></textarea>
+              <textarea id="biografia" name="biografia" v-model="user.biography"></textarea>
             </div>
             <div>
-              <button class="btn btn-primary" @click="mostrarModalGuardarPerfil">Guardar Cambios</button>
-              <b-modal id="modal-guardar" title="Guardar Perfil" ok-title="Confirmar" cancel-title="Cancelar" @ok="confirmarEnvio">
-                <p>¿Estás seguro de que deseas guardar tu perfil?</p>
-              </b-modal>
-              <template v-if="this.user.premium">
+              <div id="modal">
+                <div>
+                  <b-button v-b-modal.modal-guardar type="button" class="btn btn-primary">Guardar Cambios</b-button>
+                  <b-modal id="modal-guardar" title="Guardar Perfil" ok-title="Confirmar" cancel-title="Cancelar" @ok="confirmarEnvio">
+                    <p>¿Estás seguro de que deseas guardar tu perfil?</p>
+                  </b-modal>
+                </div>
+                <div v-if="user.premium">
+                  <b-button v-b-modal.modal-cancelar type="button" class="btn btn-danger">Cancelar Suscripción</b-button>
+                  <b-modal id="modal-cancelar" title="Cancelar Suscripción" ok-title="Confirmar" cancel-title="Cancelar" @ok="cancelarSuscripcion">
+                    <p>¿Estás seguro de que deseas cancelar tu suscripción premium?</p>
+                  </b-modal>
+                </div>
+              </div>
+              <template v-if="user.premium">
                 <div class="premium-label" v-if="user.premium">
                   <label class="checkbox-label">
                     <input type="checkbox" v-model="user.premium" disabled>
                     <span class="checkbox-text">Usuario Premium</span>
                   </label>
                 </div>
-                <button class="btn btn-danger" @click="mostrarModalCancelarSuscripcion">Cancelar Suscripción</button>
-                <b-modal id="modal-cancelar" title="Cancelar Suscripción" ok-title="Confirmar" cancel-title="Cancelar" @ok="cancelarSuscripcion">
-                  <p>¿Estás seguro de que deseas cancelar tu suscripción premium?</p>
-                </b-modal>
               </template>
               <template v-else>
                 <b-button v-if="!user.premium" v-b-modal.modal-1 type="button" class="btn btn-warning" @click="showModal = true">Hacerte premium</b-button>
@@ -163,8 +169,14 @@ export default {
   mounted() {
     const user = JSON.parse(localStorage.getItem('user'));
     if(user){
-      this.user = user;
-      this.premium = user.premium;
+      this.user.username = user.username,
+      this.user.inicisesion = user.inicisesion,
+      this.user.password = user.password,
+      this.user.email = user.email,
+      this.user.date = user.date,
+      this.user.location = user.location,
+      this.user.biography = user.biography,
+      this.user.premium = user.premium
 
     }
     this.listMensual = this.$store.state.mensualist;
@@ -175,14 +187,12 @@ export default {
       return require(`../assets/${url}`);
     },
     eliminarFila(producto, index) {
-      this.modalVisible = true;
       this.productoEliminar = producto;
     },
     eliminarFilaConfirmada() {
       const index = this.$store.state.productos.indexOf(this.productoEliminar);
       this.$store.state.productos.splice(index, 1);
       this.calcularTotal();
-      this.modalVisible = false;
     },
     calcularTotal() {
       this.total = 0;
@@ -193,27 +203,13 @@ export default {
       });
     },
     irIndex(){
-      const user = {
-        username: this.user.username,
-        inicisesion: this.user.inicisesion,
-        password: this.user.password,
-        email: this.user.email,
-        date: this.user.date,
-        location: this.user.location,
-        biography: this.user.biography,
-        premium: this.user.premium,
-
-      };
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(this.user));
       router.push('/');
     },
     confirmarEnvio(){
+      this.showChange = false;
       this.irIndex();
-      this.$bvModal.hide('modal-guardar');
-    },
 
-    mostrarModalGuardarPerfil(){
-      this.$bvModal.show('modal-guardar');
     },
     aceptarCondiciones() {
       const user = JSON.parse(localStorage.getItem('user'));
@@ -221,22 +217,16 @@ export default {
       localStorage.setItem('user', JSON.stringify(user));
       this.user.premium = true;
       this.showModal = false;
-      window.location.reload();
+      router.push('/');
     },
     resetPremium() {
       this.user.premium = false;
     },
-
-    mostrarModalCancelarSuscripcion() {
-      this.$bvModal.show('modal-cancelar');
-    },
-
     cancelarSuscripcion() {
       const user = JSON.parse(localStorage.getItem('user'));
       user.premium = false;
       localStorage.setItem('user', JSON.stringify(user));
       this.user.premium = false;
-      this.$bvModal.hide('modal-cancelar');
     }
   }
 }
@@ -428,5 +418,8 @@ textarea {
 
 .btn-eliminar:hover {
   background-color: #FF8F8F;
+}
+#modal{
+  display: flex;
 }
 </style>

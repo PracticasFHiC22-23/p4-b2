@@ -31,7 +31,7 @@
           <div v-if="!user.inicisesion" class="dropdown-menu-perfil">
             <a v-for="perfil in perfilnou" @click="mostrarModalInicioSesion">{{ perfil.nombre }}</a>
           </div>
-          <b-modal id="modal-sesio" title="Inicio Sesion" ok-title="Iniciar Sesion" cancel-title="Registrar" @ok="inicioSesion" @cancel="registrarUsuario">
+          <b-modal id="modal-sesio" title="Inicio Sesion" ok-title="Iniciar Sesion" cancel-title="Registrar" @ok="inicioSesion" @cancel="registrarUsuario" @hidden="">
             <form>
               <div class="form-group">
                 <label for="username">Usuario</label>

@@ -46,7 +46,7 @@
         <div style="display: flex; justify-content: flex-end; margin-top: 20px">
           <button class="btn-finalizar-compra" id="btn-finalizar-compra" @click="confirmarFinalizarCompra">Finalizar Compra</button>
           <div style="margin-right: 10px"></div>
-          <button class="btn-finalizar-compra" @click="mensual">Compra Mensual</button>
+          <button class="btn-finalizar-compra" @click="mensual" v-if="this.$store.state.user.inicisesion">Compra Mensual</button>
         </div>
       </div>
     </div>
