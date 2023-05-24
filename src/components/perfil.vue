@@ -34,7 +34,7 @@
                 </td>
                 <td>{{ producto.precio }} €</td>
                 <td class="eliminar-column">
-                  <button class="btn-eliminar" v-show="producto.mostrarEliminar" @click="eliminarFila(producto, index)">Eliminar</button>
+                  <button class="btn-eliminar" v-show="producto.mostrarEliminar" @click="eliminarFila(index)">Eliminar</button>
                 </td>
               </tr>
               </tbody>
@@ -186,12 +186,8 @@ export default {
     getImatgeUrl(url) {
       return require(`../assets/${url}`);
     },
-    eliminarFila(producto, index) {
-      this.productoEliminar = producto;
-    },
-    eliminarFilaConfirmada() {
-      const index = this.$store.state.productos.indexOf(this.productoEliminar);
-      this.$store.state.productos.splice(index, 1);
+    eliminarFila(index) {
+      this.$store.state.mensualist.splice(index, 1);
       this.calcularTotal();
     },
     calcularTotal() {
